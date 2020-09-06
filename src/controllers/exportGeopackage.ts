@@ -3,7 +3,7 @@ import httpStatus from 'http-status-codes';
 import { injectable } from 'tsyringe';
 
 @injectable()
-export class HelloWorldController {
+export class ExportGeopackageController {
   public get(req: Request, res: Response): Response {
     return res.status(httpStatus.OK).json({ hello: 'world' });
   }

@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { helloWorldRouter } from './helloWorld';
+import { exportGeopackageRouter } from './exportGeopackage';
 import { swaggerRouter } from './swagger';
 
 const globalRouter = Router();
 globalRouter.use(swaggerRouter);
-globalRouter.use('/helloWorld', helloWorldRouter);
+globalRouter.use('/exportGeopackage', exportGeopackageRouter);
 
 export { globalRouter };
