@@ -3,8 +3,9 @@ import httpStatus from 'http-status-codes';
 import { injectable } from 'tsyringe';
 
 @injectable()
-export class HelloWorldController {
-  public get(req: Request, res: Response): Response {
+export class ExportGeopackageController {
+  public post(req: Request, res: Response): Response {
+    // todo: write to kafka
     return res.status(httpStatus.OK).json({ hello: 'world' });
   }
 }

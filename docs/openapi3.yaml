@@ -1,40 +1,87 @@
 openapi: 3.0.1
 info:
-  title: service-name
-  description: basic template for map colonies service
+  title: exporter-trigger
+  description: Service that responsible for activating the export geopackage process
   version: 1.0.0
 servers:
-  - url: http://localhost:1337
+  - url: http://localhost:80
 paths:
-  /helloworld:
-    get:
+  /exportGeopackage:
+    post:
       tags:
-        - helloWorld
-      summary: hello world
+        - Geopackage Exporter
+      summary: Trigger export geopackage process
+      operationId: exportGeopackage
+      requestBody:
+        $ref: "#/components/requestBodies/ExportProcessBody"
       responses:
         200:
           description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/helloWorld"
+          content: {}
+        500:
+          description: Server Error
+          content: {}
+      x-codegen-request-body-name: body
+
 components:
-  parameters:
-    idParam:
-      name: id
-      in: query
-      description: id of requested item
+  requestBodies:
+    ExportProcessBody:
+      description: Export geopackage request
       required: true
-      schema:
-        type: string
-        format: uuid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/exportProcess'
   schemas:
-    helloWorld:
+    layerOption:
       required:
-        - hello
+        - url
+        - exportType
       type: object
       properties:
-        hello:
+        url:
           type: string
+          description: URL of tile server that needs to be downloaded
+        exportType:
+          type: string
+          enum: [raster, vector]
+          description: >
+            Export Type:
+             * `raster` - Geopackage of raster tiles
+             * `vector` - Geopackage of vector features
       example:
-        hello: world
+        url: http://test/geoserver/ows?service=wms
+        exportType: raster
+
+    exportProcess:
+      required:
+        - bbox
+        - fileName
+        - directoryName
+        - exportedLayers
+      type: object
+      properties:
+        fileName:
+          type: string
+          description: the file name to be created on shared folder
+        directoryName:
+          type: string
+          description: the directory name to be created on shared folder
+        bbox:
+          type: string
+          description: Bounding box corners (lower left, upper right)=(minx,miny,maxx,maxy) in crs units
+        exportedLayers:
+          type: array
+          items:
+            $ref: "#/components/schemas/layerOption"
+
+      example:
+        fileName: test_file
+        directoryName: test_directory
+        bbox: 22.5,45,45,67.5
+        exportedLayers:
+          - url: http://test/geoserver/ows?service=wms
+            exportType: raster
+
+
+

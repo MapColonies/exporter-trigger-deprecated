@@ -1,4 +1,5 @@
 import express from 'express';
+import * as bodyparser from 'body-parser';
 import { initAsync as validatorInit } from 'openapi-validator-middleware';
 import { MCLogger } from '@map-colonies/mc-logger';
 import { injectable } from 'tsyringe';
@@ -29,6 +30,7 @@ export class ServerBuilder {
   }
 
   private registerMiddleware(): void {
+    this.serverInstance.use(bodyparser.json());
     this.serverInstance.use(this.requestLogger.getLoggerMiddleware());
     this.serverInstance.use(this.errorHandler.getErrorHandlerMiddleware());
   }
