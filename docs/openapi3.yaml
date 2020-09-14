@@ -32,16 +32,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/exportProcess'
-
-  parameters:
-    idParam:
-      name: id
-      in: query
-      description: id of requested item
-      required: true
-      schema:
-        type: string
-        format: uuid
   schemas:
     layerOption:
       required:
