@@ -7,18 +7,32 @@ servers:
   - url: http://localhost:80
 paths:
   /exportGeopackage:
-    get:
+    post:
       tags:
         - Geopackage Exporter
       summary: Trigger export geopackage process
+      operationId: exportGeopackage
+      requestBody:
+        $ref: "#/components/requestBodies/ExportProcessBody"
       responses:
         200:
           description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/exportProcess"
+          content: {}
+        500:
+          description: Server Error
+          content: {}
+      x-codegen-request-body-name: body
+
 components:
+  requestBodies:
+    ExportProcessBody:
+      description: Export geopackage request
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/exportProcess'
+
   parameters:
     idParam:
       name: id
@@ -76,7 +90,7 @@ components:
         directoryName: test_directory
         bbox: 22.5,45,45,67.5
         exportedLayers:
-          - url: http://test/geoserver/ows?service=wms,
+          - url: http://test/geoserver/ows?service=wms
             exportType: raster
 
 

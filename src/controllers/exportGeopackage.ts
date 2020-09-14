@@ -4,7 +4,8 @@ import { injectable } from 'tsyringe';
 
 @injectable()
 export class ExportGeopackageController {
-  public get(req: Request, res: Response): Response {
+  public post(req: Request, res: Response): Response {
+    // todo: write to kafka
     return res.status(httpStatus.OK).json({ hello: 'world' });
   }
 }
