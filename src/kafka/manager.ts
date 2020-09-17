@@ -3,15 +3,12 @@ import { MCLogger } from '@map-colonies/mc-logger';
 
 import { get } from 'config';
 import { Kafka, Producer } from 'kafkajs';
+import { IKafkaConfig } from '../model/kafkaConfig';
 
 @injectable()
 export class KafkaManager {
   protected producer: Producer;
-  protected kafkaConfig: {
-    clientId: string;
-    brokers: [];
-    topic: string;
-  };
+  protected kafkaConfig: IKafkaConfig;
 
   public constructor(private readonly logger: MCLogger) {
     this.kafkaConfig = get('kafka');
@@ -41,6 +38,7 @@ export class KafkaManager {
     this.logger.debug(`sendMessage to kafka: message=${ message }`);
     return this.internalSendMessage(message).catch((error) => {
       this.logger.error(`Failed to send to kafka error=${ JSON.stringify(error) }, original message=${ message }`);
+      throw (error);
     });
   }
 }

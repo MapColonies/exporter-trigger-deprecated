@@ -10,14 +10,22 @@ export class ExportGeopackageController {
   public constructor(@inject(delay(() => KafkaManager)) private readonly kafkaManager: KafkaManager) {
   }
 
-  public async post(req: Request, res: Response): Promise<Response> {
+  public async exportRequestHandler(req: Request, res: Response): Promise<Response> {
+    const requestBody = req.body as IExportRequest;
+    let message;
     try {
-      const requestBody = req.body as IExportRequest;
-      const message = JSON.stringify(requestBody);
-      await this.kafkaManager.sendMessage(message);
-      return res.status(httpStatus.OK).json({ hello: 'world' });
+      message = JSON.stringify(requestBody);
     } catch (err) {
-      return res.status(httpStatus.INTERNAL_SERVER_ERROR).json(err);
+      return res.status(httpStatus.BAD_REQUEST).json(err);
+    }
+
+    try {
+      await this.kafkaManager.sendMessage(message);
+      return res.status(httpStatus.OK).json({ success: true });
+    } catch (err) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
+      const statusCode = err && err.meta && err.meta.body && err.meta.body.status ? err.meta.body.status : httpStatus.INTERNAL_SERVER_ERROR;
+      return res.status(statusCode).json(err);
     }
   }
 }

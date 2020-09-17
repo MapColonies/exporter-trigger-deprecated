@@ -6,6 +6,6 @@ import { ExportGeopackageController } from '../controllers/exportGeopackage';
 const exportGeopackageRouter = Router();
 const controller = container.resolve(ExportGeopackageController);
 
-exportGeopackageRouter.post('/', validate, controller.post.bind(controller));
+exportGeopackageRouter.post('/', validate, controller.exportRequestHandler.bind(controller));
 
 export { exportGeopackageRouter };
