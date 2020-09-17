@@ -1,6 +1,6 @@
 export interface IKafkaConfig {
   clientId: string;
-  brokers: [];
+  brokers: string[];
   topic: string;
 };
 
