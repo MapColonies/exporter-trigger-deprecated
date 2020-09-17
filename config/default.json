@@ -6,5 +6,10 @@
   },
   "logger": {
     "level": "info"
+  },
+  "kafka": {
+    "clientId": "exporter-trigger",
+    "brokers": ["10.28.11.49:9092"],
+    "topic": "topic-test-7"
   }
 }

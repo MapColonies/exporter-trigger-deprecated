@@ -7,6 +7,7 @@ import {
   ILoggerConfig,
   IServiceConfig,
 } from '@map-colonies/mc-logger';
+import { KafkaManager } from './kafka/manager';
 
 function registerExternalValues(): void {
   const loggerConfig = get<ILoggerConfig>('logger');
@@ -16,6 +17,7 @@ function registerExternalValues(): void {
 
   container.register<MCLogger>(MCLogger, { useValue: logger });
   container.register<Probe>(Probe, { useValue: new Probe(logger, {}) });
+  container.register<KafkaManager>(KafkaManager, { useValue: new KafkaManager(logger) });
 }
 
 export { registerExternalValues };
