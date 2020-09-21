@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import httpStatus from 'http-status-codes';
 import { delay, inject, injectable } from 'tsyringe';
 import { KafkaManager } from '../kafka/manager';
-import { IExportRequest, IRasterCut } from '../model/exportRequest';
+import { IInboundRequest, IOutboundRequest } from '../model/exportRequest';
 
 @injectable()
 export class ExportGeopackageController {
@@ -11,16 +11,16 @@ export class ExportGeopackageController {
   }
 
   public async exportRequestHandler(req: Request, res: Response): Promise<Response> {
-    const requestBody = req.body as IExportRequest;
+    const requestBody = req.body as IInboundRequest;
     let messageToSend : string;
     try {
-      let message : IRasterCut = {
+      const parsedMessage : IOutboundRequest = {
         taskId: 'test',
         filename: requestBody.fileName,
         url: requestBody.exportedLayers[0].url,
         bbox: requestBody.bbox
       }
-      messageToSend = JSON.stringify(message);
+      messageToSend = JSON.stringify(parsedMessage);
     } catch (err) {
       return res.status(httpStatus.BAD_REQUEST).json(err);
     }
