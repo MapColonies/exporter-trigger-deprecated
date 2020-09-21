@@ -5,7 +5,7 @@ keys = [
     "/configuration/logger/level",
     "/configuration/swagger/jsonPath",
     "/configuration/swagger/uiPath",
-    "/kafka/clientId",
-    "/kafka/brokers",
-    "/kafka/topic"
+    "/configuration/kafka/clientId",
+    "/configuration/kafka/brokers",
+    "/configuration/kafka/topic"
 ]

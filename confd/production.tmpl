@@ -7,8 +7,8 @@
     "level": "{{ getv "/configuration/logger/level" "error" }}"
   },
   "kafka": {
-    "clientId": "{{ getv "/kafka/clientId" "exporter-trigger" }}",
-    "brokers": {{ getv "/kafka/brokers" "[\"10.28.11.49:9092\"]" }},
-    "topic": "{{ getv "/kafka/topic" "topic-test-7" }}"
+    "clientId": "{{ getv "/configuration/kafka/clientId" "exporter-trigger" }}",
+    "brokers": {{ getv "/configuration/kafka/brokers" "[\"10.28.11.49:9092\"]" }},
+    "topic": "{{ getv "/configuration/kafka/topic" "topic-test-7" }}"
   }  
 }
