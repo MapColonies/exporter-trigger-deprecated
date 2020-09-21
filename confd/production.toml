@@ -4,5 +4,8 @@ dest = "/config/production.json"
 keys = [
     "/configuration/logger/level",
     "/configuration/swagger/jsonPath",
-    "/configuration/swagger/uiPath"
+    "/configuration/swagger/uiPath",
+    "/kafka/clientId",
+    "/kafka/brokers",
+    "/kafka/topic"
 ]
