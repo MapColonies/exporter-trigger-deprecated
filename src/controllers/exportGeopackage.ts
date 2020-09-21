@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import httpStatus from 'http-status-codes';
 import { delay, inject, injectable } from 'tsyringe';
 import { KafkaManager } from '../kafka/manager';
-import { IExportRequest } from '../model/exportRequest';
+import { IExportRequest, IRasterCut } from '../model/exportRequest';
 
 @injectable()
 export class ExportGeopackageController {
@@ -12,15 +12,21 @@ export class ExportGeopackageController {
 
   public async exportRequestHandler(req: Request, res: Response): Promise<Response> {
     const requestBody = req.body as IExportRequest;
-    let message;
+    let messageToSend : string;
     try {
-      message = JSON.stringify(requestBody);
+      let message : IRasterCut = {
+        taskId: 'test',
+        filename: requestBody.fileName,
+        url: requestBody.exportedLayers[0].url,
+        bbox: requestBody.bbox
+      }
+      messageToSend = JSON.stringify(message);
     } catch (err) {
       return res.status(httpStatus.BAD_REQUEST).json(err);
     }
 
     try {
-      await this.kafkaManager.sendMessage(message);
+      await this.kafkaManager.sendMessage(messageToSend);
       return res.status(httpStatus.OK).json({ success: true });
     } catch (err) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment

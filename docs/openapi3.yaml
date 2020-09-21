@@ -68,8 +68,8 @@ components:
           type: string
           description: the directory name to be created on shared folder
         bbox:
-          type: string
-          description: Bounding box corners (lower left, upper right)=(minx,miny,maxx,maxy) in crs units
+          type: array
+          description: Bounding box corners (lower left, upper right)=[minx,miny,maxx,maxy] in crs units as array
         exportedLayers:
           type: array
           items:
@@ -78,7 +78,7 @@ components:
       example:
         fileName: test_file
         directoryName: test_directory
-        bbox: 22.5,45,45,67.5
+        bbox: [22.5,45,45,67.5]
         exportedLayers:
           - url: http://test/geoserver/ows?service=wms
             exportType: raster
