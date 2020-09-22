@@ -1,7 +1,8 @@
 {
   "swagger": {
     "jsonPath": "{{ getv "/configuration/swagger/jsonPath" "/api-json" }}",
-    "uiPath": "{{ getv "/configuration/swagger/uiPath" "/api-docs" }}"
+    "uiPath": "{{ getv "/configuration/swagger/uiPath" "/api-docs" }}",
+    "portOverride": "{{ getv "/configuration/swagger/port" "80" }}"
   },
   "logger": {
     "level": "{{ getv "/configuration/logger/level" "error" }}"
