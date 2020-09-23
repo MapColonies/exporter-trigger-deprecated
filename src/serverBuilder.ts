@@ -6,6 +6,7 @@ import { injectable } from 'tsyringe';
 import { RequestLogger } from './middleware/RequestLogger';
 import { ErrorHandler } from './middleware/ErrorHandler';
 import { globalRouter } from './routers/global';
+import cors from 'cors';
 
 @injectable()
 export class ServerBuilder {
@@ -30,6 +31,7 @@ export class ServerBuilder {
   }
 
   private registerMiddleware(): void {
+    this.serverInstance.use(cors());
     this.serverInstance.use(bodyparser.json());
     this.serverInstance.use(this.requestLogger.getLoggerMiddleware());
     this.serverInstance.use(this.errorHandler.getErrorHandlerMiddleware());
