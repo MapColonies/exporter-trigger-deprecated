@@ -6,6 +6,7 @@ import { injectable } from 'tsyringe';
 import { RequestLogger } from './middleware/RequestLogger';
 import { ErrorHandler } from './middleware/ErrorHandler';
 import { globalRouter } from './routers/global';
+import cors from 'cors';
 
 @injectable()
 export class ServerBuilder {
@@ -23,13 +24,14 @@ export class ServerBuilder {
     //initiate swagger validator
     await validatorInit('./docs/openapi3.yaml');
 
-    this.registerMiddleware();
+    this.registerMiddlewares();
     this.serverInstance.use(globalRouter);
 
     return this.serverInstance;
   }
 
-  private registerMiddleware(): void {
+  private registerMiddlewares(): void {
+    this.serverInstance.use(cors());
     this.serverInstance.use(bodyparser.json());
     this.serverInstance.use(this.requestLogger.getLoggerMiddleware());
     this.serverInstance.use(this.errorHandler.getErrorHandlerMiddleware());
