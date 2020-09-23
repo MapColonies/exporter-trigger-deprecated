@@ -24,13 +24,13 @@ export class ServerBuilder {
     //initiate swagger validator
     await validatorInit('./docs/openapi3.yaml');
 
-    this.registerMiddleware();
+    this.registerMiddlewares();
     this.serverInstance.use(globalRouter);
 
     return this.serverInstance;
   }
 
-  private registerMiddleware(): void {
+  private registerMiddlewares(): void {
     this.serverInstance.use(cors());
     this.serverInstance.use(bodyparser.json());
     this.serverInstance.use(this.requestLogger.getLoggerMiddleware());
