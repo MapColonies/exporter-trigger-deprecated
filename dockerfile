@@ -21,6 +21,8 @@ COPY ./confd ./confd
 COPY --from=build /usr/src/app/dist .
 COPY --from=build /usr/src/app/node_modules ./node_modules
 
+RUN npm run confd:prod
+
 HEALTHCHECK CMD wget http://127.0.0.1:${SERVER_PORT}/liveness -O /dev/null || exit 1
 
 CMD ["./run.sh"]
