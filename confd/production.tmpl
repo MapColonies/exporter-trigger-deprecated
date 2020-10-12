@@ -13,8 +13,7 @@
     "topic": "{{ getv "/configuration/kafka/topic" "topic-test-7" }}"
   },
   "commonStorage": {
-    "url": "{{ getv "/configuration/elastic/node" "127.0.0.1:8080" }}",
+    "url": "{{ getv "/configuration/elastic/node" "http://127.0.0.1:8080" }}",
     "index": "{{ getv "/configuration/elastic/index" "test" }}"
-  }
   }
 }
