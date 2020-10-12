@@ -22,6 +22,19 @@ paths:
           description: Server Error
           content: {}
       x-codegen-request-body-name: body
+  /status:
+    get:
+      tags:
+        - Geopackage Export Status
+      summary: Get the status of export jobs
+      operationId: getStatus
+      responses:
+        200:
+          description: OK
+          content: {}
+        500:
+          description: Server Error
+          content: {}
 
 components:
   requestBodies:
