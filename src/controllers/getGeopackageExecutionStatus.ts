@@ -16,7 +16,7 @@ export class GetExecutionStatusController {
   ): Promise<Response> {
     try {
       const status = await this.statusManager.getGeopackageExecutionStatus();
-      return res.status(httpStatus.OK).json({ status: status.data });
+      return res.status(httpStatus.OK).json(status.data);
     } catch (error) {
       return res.status(httpStatus.INTERNAL_SERVER_ERROR).json(error);
     }
