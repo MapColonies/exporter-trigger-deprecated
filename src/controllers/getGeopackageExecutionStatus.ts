@@ -4,7 +4,7 @@ import { delay, inject, injectable } from 'tsyringe';
 import { ExecutionStatusManager } from '../status/executionStatusManager';
 
 @injectable()
-export class GetStatusController {
+export class GetExecutionStatusController {
   public constructor(
     @inject(delay(() => ExecutionStatusManager))
     private readonly statusManager: ExecutionStatusManager
