@@ -13,7 +13,7 @@ paths:
       summary: Trigger export geopackage process
       operationId: exportGeopackage
       requestBody:
-        $ref: "#/components/requestBodies/ExportProcessBody"
+        $ref: '#/components/requestBodies/ExportProcessBody'
       responses:
         200:
           description: OK
@@ -22,6 +22,19 @@ paths:
           description: Server Error
           content: {}
       x-codegen-request-body-name: body
+  /status:
+    get:
+      tags:
+        - Geopackage Execution Status
+      summary: Get the status of export jobs
+      operationId: getGeopackageExecutionStatus
+      responses:
+        200:
+          description: OK
+          content: {}
+        500:
+          description: Server Error
+          content: {}
 
 components:
   requestBodies:
@@ -73,15 +86,12 @@ components:
         exportedLayers:
           type: array
           items:
-            $ref: "#/components/schemas/layerOption"
+            $ref: '#/components/schemas/layerOption'
 
       example:
         fileName: test_file
         directoryName: test_directory
-        bbox: [22.5,45,45,67.5]
+        bbox: [22.5, 45, 45, 67.5]
         exportedLayers:
           - url: http://test/geoserver/ows?service=wms
             exportType: raster
-
-
-

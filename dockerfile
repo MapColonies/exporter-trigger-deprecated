@@ -7,6 +7,7 @@ RUN npm run build
 
 
 FROM node:12.18.3-slim as production
+RUN apt-get update && apt-get -y install wget
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 ENV SERVER_PORT=80

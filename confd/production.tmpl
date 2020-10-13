@@ -11,5 +11,9 @@
     "clientId": "{{ getv "/configuration/kafka/clientId" "exporter-trigger" }}",
     "brokers": {{ getv "/configuration/kafka/brokers" "[\"10.28.11.49:9092\"]" }},
     "topic": "{{ getv "/configuration/kafka/topic" "topic-test-7" }}"
-  }  
+  },
+  "commonStorage": {
+    "url": "{{ getv "/configuration/elastic/node" "http://127.0.0.1:8080" }}",
+    "index": "{{ getv "/configuration/elastic/index" "test" }}"
+  }
 }
