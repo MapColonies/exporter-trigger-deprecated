@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { exportGeopackageRouter } from './exportGeopackage';
-import { getStatusRouter } from './getStatus';
+import { getStatusRouter } from './getGeopackageExecutionStatus';
 import { swaggerRouter } from './swagger';
 
 const globalRouter = Router();

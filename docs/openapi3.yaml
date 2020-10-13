@@ -13,7 +13,7 @@ paths:
       summary: Trigger export geopackage process
       operationId: exportGeopackage
       requestBody:
-        $ref: "#/components/requestBodies/ExportProcessBody"
+        $ref: '#/components/requestBodies/ExportProcessBody'
       responses:
         200:
           description: OK
@@ -25,9 +25,9 @@ paths:
   /status:
     get:
       tags:
-        - Geopackage Export Status
+        - Geopackage Execution Status
       summary: Get the status of export jobs
-      operationId: getStatus
+      operationId: getGeopackageExecutionStatus
       responses:
         200:
           description: OK
@@ -86,15 +86,12 @@ components:
         exportedLayers:
           type: array
           items:
-            $ref: "#/components/schemas/layerOption"
+            $ref: '#/components/schemas/layerOption'
 
       example:
         fileName: test_file
         directoryName: test_directory
-        bbox: [22.5,45,45,67.5]
+        bbox: [22.5, 45, 45, 67.5]
         exportedLayers:
           - url: http://test/geoserver/ows?service=wms
             exportType: raster
-
-
-
