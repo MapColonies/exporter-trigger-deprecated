@@ -13,7 +13,11 @@ export class KafkaManager {
   public constructor(private readonly logger: MCLogger) {
     this.kafkaConfig = get('kafka');
 
-    logger.info(`Kafka manager created clientId=${ this.kafkaConfig.clientId }, topic=${ this.kafkaConfig.topic } brokers=${ JSON.stringify(this.kafkaConfig.brokers) }`);
+    logger.info(
+      `Kafka manager created clientId=${this.kafkaConfig.clientId}, topic=${
+        this.kafkaConfig.topic
+      } brokers=${JSON.stringify(this.kafkaConfig.brokers)}`
+    );
     const kafka = new Kafka({
       clientId: this.kafkaConfig.clientId,
       brokers: this.kafkaConfig.brokers,
@@ -35,10 +39,14 @@ export class KafkaManager {
   }
 
   public async sendMessage(message: string) {
-    this.logger.debug(`sendMessage to kafka: message=${ message }`);
-    return this.internalSendMessage(message).catch((error) => {
-      this.logger.error(`Failed to send to kafka error=${ JSON.stringify(error) }, original message=${ message }`);
-      throw (error);
+    this.logger.debug(`sendMessage to kafka: message=${message}`);
+    await this.internalSendMessage(message).catch((error) => {
+      this.logger.error(
+        `Failed to send to kafka error=${JSON.stringify(
+          error
+        )}, original message=${message}`
+      );
+      throw error;
     });
   }
 }
