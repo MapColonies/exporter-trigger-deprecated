@@ -22,7 +22,7 @@ paths:
           description: Server Error
           content: {}
       x-codegen-request-body-name: body
-  /status:
+  /exportStatus:
     get:
       tags:
         - Geopackage Execution Status
