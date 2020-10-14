@@ -44,7 +44,8 @@ export class CommonStorageManager {
         tilesEst: exportData.tilesEst,
         status: 'pending',
         link: '',
-        date: new Date().toISOString(),
+        creationDate: new Date().toISOString(),
+        lastUpdateTime: '',
         progress: 0,
       },
     }).catch((error) => {
