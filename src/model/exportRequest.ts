@@ -18,3 +18,11 @@ export interface IOutboundRequest {
   url: string;
   bbox: Array<number>;
 }
+
+export interface IExportData {
+  taskId: string;
+  fileName: string;
+  sizeEst: number;
+  tilesEst: number;
+  bbox: Array<number>;
+}
