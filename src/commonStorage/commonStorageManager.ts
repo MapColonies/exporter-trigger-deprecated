@@ -2,6 +2,7 @@ import { injectable } from 'tsyringe';
 import { MCLogger } from '@map-colonies/mc-logger';
 import Axios from 'axios';
 import { get } from 'config';
+import Urls from '../requests/urls';
 import { ICommonStorageConfig } from '../model/commonStorageConfig';
 import { IExportData } from '../model/exportRequest';
 
@@ -19,7 +20,7 @@ export class CommonStorageManager {
   public async getGeopackageExecutionStatus() {
     this.logger.debug('Getting geopackage export status');
     const status = await Axios.get(
-      `${this.config.url}/indexes/${this.config.index}/document`
+      Urls.commonStorage.getExportStatusLink
     ).catch((error) => {
       this.logger.error(
         `Failed to get export status, error=${JSON.stringify(error)}`
@@ -35,21 +36,18 @@ export class CommonStorageManager {
 
   public async saveExportData(exportData: IExportData) {
     this.logger.debug('Saving new export data.');
-    await Axios.post(
-      `${this.config.url}/indexes/${this.config.index}/document`,
-      {
-        body: {
-          taskId: exportData.taskId,
-          fileName: exportData.fileName,
-          sizeEst: exportData.sizeEst,
-          tilesEst: exportData.tilesEst,
-          status: 'pending',
-          link: '',
-          date: new Date().toISOString(),
-          progress: 0,
-        },
-      }
-    ).catch((error) => {
+    await Axios.post(Urls.commonStorage.saveExportDataLink, {
+      body: {
+        taskId: exportData.taskId,
+        fileName: exportData.fileName,
+        sizeEst: exportData.sizeEst,
+        tilesEst: exportData.tilesEst,
+        status: 'pending',
+        link: '',
+        date: new Date().toISOString(),
+        progress: 0,
+      },
+    }).catch((error) => {
       this.logger.error(
         `Failed saving export data, error=${JSON.stringify(error)}`
       );
