@@ -5,6 +5,7 @@ import { get } from 'config';
 import Urls from '../requests/urls';
 import { ICommonStorageConfig } from '../model/commonStorageConfig';
 import { IExportData } from '../model/exportRequest';
+import { createStatusResponseBody } from '../model/exportStatusRequest';
 
 @injectable()
 export class CommonStorageManager {
@@ -37,17 +38,7 @@ export class CommonStorageManager {
   public async saveExportData(exportData: IExportData) {
     this.logger.debug('Saving new export data.');
     await Axios.post(Urls.commonStorage.saveExportDataLink, {
-      body: {
-        taskId: exportData.taskId,
-        fileName: exportData.fileName,
-        sizeEst: exportData.sizeEst,
-        tilesEst: exportData.tilesEst,
-        status: 'pending',
-        link: '',
-        creationDate: new Date().toISOString(),
-        lastUpdateTime: '',
-        progress: 0,
-      },
+      body: createStatusResponseBody(exportData),
     }).catch((error) => {
       this.logger.error(
         `Failed saving export data, error=${JSON.stringify(error)}`
