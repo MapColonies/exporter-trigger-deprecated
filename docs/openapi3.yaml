@@ -72,6 +72,8 @@ components:
         - fileName
         - directoryName
         - exportedLayers
+        - sizeEst
+        - tilesEst
       type: object
       properties:
         fileName:
@@ -87,11 +89,25 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/layerOption'
+        sizeEst:
+          type: number
+          description: the file estimated size (Mb)
+        tilesEst:
+          type: number
+          description: the estimated amount of tiles
 
       example:
         fileName: test_file
         directoryName: test_directory
-        bbox: [22.5, 45, 45, 67.5]
+        bbox:
+          [
+            34.811938017107494,
+            31.95475033759175,
+            34.82237261707599,
+            31.96426962177354,
+          ]
         exportedLayers:
           - url: http://test/geoserver/ows?service=wms
             exportType: raster
+        sizeEst: 30
+        tilesEst: 10
