@@ -20,19 +20,19 @@ export class CommonStorageManager {
 
   public async getGeopackageExecutionStatus() {
     this.logger.debug('Getting geopackage export status');
-    const status = await Axios.get(
-      Urls.commonStorage.getExportStatusLink
-    ).catch((error) => {
+
+    try {
+      const status = await Axios.get(Urls.commonStorage.getExportStatusLink);
+      this.logger.debug(
+        `Got export status from CommonStorage. Status: ${status}`
+      );
+      return status;
+    } catch (error) {
       this.logger.error(
         `Failed to get export status, error=${JSON.stringify(error)}`
       );
       throw error;
-    });
-
-    this.logger.debug(
-      `Got export status from CommonStorage. Status: ${status}`
-    );
-    return status;
+    }
   }
 
   public async saveExportData(exportData: IExportData) {
@@ -46,6 +46,6 @@ export class CommonStorageManager {
       throw error;
     });
 
-    this.logger.debug(`Saved export data. Data: ${exportData}`);
+    this.logger.debug(`Saved export data. Data: ${JSON.stringify(exportData)}`);
   }
 }
