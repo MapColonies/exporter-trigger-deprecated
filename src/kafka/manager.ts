@@ -4,6 +4,12 @@ import { MCLogger } from '@map-colonies/mc-logger';
 import { get } from 'config';
 import { Kafka, Producer } from 'kafkajs';
 import { IKafkaConfig } from '../model/kafkaConfig';
+import {
+  KafkaConnectionError,
+  KafkaDisconnectError,
+  KafkaSendError,
+} from '../requests/errors/kafka';
+import { HttpError } from '../requests/errors/errors';
 
 @injectable()
 export class KafkaManager {
@@ -26,27 +32,44 @@ export class KafkaManager {
   }
 
   protected async internalSendMessage(message: string) {
-    await this.producer.connect();
-    await this.producer.send({
-      topic: this.kafkaConfig.topic,
-      messages: [
-        {
-          value: message,
-        },
-      ],
-    });
-    await this.producer.disconnect();
+    try {
+      await this.producer.connect();
+    } catch (error) {
+      const err = error as Error;
+      throw new KafkaConnectionError(err.message, err.stack);
+    }
+
+    try {
+      await this.producer.send({
+        topic: this.kafkaConfig.topic,
+        messages: [
+          {
+            value: message,
+          },
+        ],
+      });
+    } catch (error) {
+      const err = error as Error;
+      throw new KafkaSendError(message, err.message, err.stack);
+    }
+
+    try {
+      await this.producer.disconnect();
+    } catch (error) {
+      const err = error as Error;
+      throw new KafkaDisconnectError(err.message, err.stack);
+    }
   }
 
   public async sendMessage(message: string) {
     this.logger.debug(`sendMessage to kafka: message=${message}`);
-    await this.internalSendMessage(message).catch((error) => {
-      this.logger.error(
-        `Failed to send to kafka error=${JSON.stringify(
-          error
-        )}, original message=${message}`
-      );
+    try {
+      await this.internalSendMessage(message);
+    } catch (error) {
+      if (error instanceof HttpError) {
+        this.logger.error(`${error.toString()}, original message=${message}`);
+      }
       throw error;
-    });
+    }
   }
 }
