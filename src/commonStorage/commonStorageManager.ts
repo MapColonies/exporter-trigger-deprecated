@@ -1,11 +1,14 @@
 import { injectable } from 'tsyringe';
 import { MCLogger } from '@map-colonies/mc-logger';
-import Axios from 'axios';
+import Axios, { AxiosResponse } from 'axios';
 import { get } from 'config';
 import Urls from '../requests/urls';
 import { ICommonStorageConfig } from '../model/commonStorageConfig';
 import { IExportData } from '../model/exportRequest';
-import { createStatusResponseBody } from '../model/exportStatusRequest';
+import {
+  IExportStatusResponse,
+  createStatusResponseBody,
+} from '../model/exportStatusRequest';
 
 @injectable()
 export class CommonStorageManager {
@@ -18,13 +21,18 @@ export class CommonStorageManager {
     );
   }
 
-  public async getGeopackageExecutionStatus() {
+  public async getGeopackageExecutionStatus(): Promise<IExportStatusResponse> {
     this.logger.debug('Getting geopackage export status');
 
     try {
-      const status = await Axios.get(Urls.commonStorage.getExportStatusLink);
+      const res: AxiosResponse<IExportStatusResponse> = await Axios.get(
+        Urls.commonStorage.getExportStatusLink
+      );
+      const status: IExportStatusResponse = res.data;
       this.logger.debug(
-        `Got export status from CommonStorage. Status: ${status}`
+        `Got export status from CommonStorage. Status: ${JSON.stringify(
+          status
+        )}`
       );
       return status;
     } catch (error) {
@@ -35,7 +43,7 @@ export class CommonStorageManager {
     }
   }
 
-  public async saveExportData(exportData: IExportData) {
+  public async saveExportData(exportData: IExportData): Promise<void> {
     this.logger.debug('Saving new export data.');
     await Axios.post(Urls.commonStorage.saveExportDataLink, {
       body: createStatusResponseBody(exportData),
