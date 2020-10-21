@@ -31,7 +31,19 @@ export class KafkaManager {
     this.producer = kafka.producer();
   }
 
-  protected async internalSendMessage(message: string) {
+  public async sendMessage(message: string): Promise<void> {
+    this.logger.debug(`sendMessage to kafka: message=${message}`);
+    try {
+      await this.internalSendMessage(message);
+    } catch (error) {
+      if (error instanceof HttpError) {
+        this.logger.error(`${error.toString()}, original message=${message}`);
+      }
+      throw error;
+    }
+  }
+
+  protected async internalSendMessage(message: string): Promise<void> {
     try {
       await this.producer.connect();
     } catch (error) {
@@ -58,18 +70,6 @@ export class KafkaManager {
     } catch (error) {
       const err = error as Error;
       throw new KafkaDisconnectError(err.message, err.stack);
-    }
-  }
-
-  public async sendMessage(message: string) {
-    this.logger.debug(`sendMessage to kafka: message=${message}`);
-    try {
-      await this.internalSendMessage(message);
-    } catch (error) {
-      if (error instanceof HttpError) {
-        this.logger.error(`${error.toString()}, original message=${message}`);
-      }
-      throw error;
     }
   }
 }
