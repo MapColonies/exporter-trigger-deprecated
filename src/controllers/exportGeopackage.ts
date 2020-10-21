@@ -40,7 +40,7 @@ export class ExportGeopackageController {
       );
     } catch (error) {
       if (error instanceof HttpError) {
-        return res.status(error.status).json(error);
+        return res.status(error.status).json(error.name);
       }
       return next(error);
     }
