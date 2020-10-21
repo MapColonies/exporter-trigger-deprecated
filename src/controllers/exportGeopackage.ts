@@ -10,12 +10,15 @@ import { ICommonStorageConfig } from '../model/commonStorageConfig';
 import { HttpError } from '../requests/errors/errors';
 import outboundRequestString from '../util/outboundRequestToExport';
 import exportDataString from '../util/exportDataString';
+import { MCLogger } from '@map-colonies/mc-logger';
 
 @injectable()
 export class ExportGeopackageController {
   protected commonStorageConfig: ICommonStorageConfig;
 
   public constructor(
+    @inject(delay(() => MCLogger))
+    private readonly logger: MCLogger,
     @inject(delay(() => KafkaManager))
     private readonly kafkaManager: KafkaManager,
     @inject(delay(() => CommonStorageManager))
@@ -39,6 +42,8 @@ export class ExportGeopackageController {
         exportDataString(taskId, requestBody)
       );
     } catch (error) {
+      this.logger.error(`Failed export, error=${JSON.stringify(error)}`);
+
       if (error instanceof HttpError) {
         return res.status(error.status).json(error.name);
       }
