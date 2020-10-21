@@ -9,6 +9,7 @@ import {
   IExportStatusResponse,
   createStatusResponseBody,
 } from '../model/exportStatusRequest';
+import { GetStatusError, SaveExportDataError } from '../requests/errors/status';
 
 @injectable()
 export class CommonStorageManager {
@@ -36,10 +37,7 @@ export class CommonStorageManager {
       );
       return status;
     } catch (error) {
-      this.logger.error(
-        `Failed to get export status, error=${JSON.stringify(error)}`
-      );
-      throw error;
+      throw new GetStatusError(error);
     }
   }
 
@@ -51,8 +49,7 @@ export class CommonStorageManager {
         body: createStatusResponseBody(exportData),
       });
     } catch (error) {
-      this.logger.error(`Failed saving export data, data=${exportData}`);
-      throw error;
+      throw new SaveExportDataError(error, exportData);
     }
 
     this.logger.debug(`Saved export data. Data: ${JSON.stringify(exportData)}`);
