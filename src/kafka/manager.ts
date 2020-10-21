@@ -9,7 +9,6 @@ import {
   KafkaDisconnectError,
   KafkaSendError,
 } from '../requests/errors/kafka';
-import { HttpError } from '../requests/errors/errors';
 
 @injectable()
 export class KafkaManager {
@@ -36,9 +35,7 @@ export class KafkaManager {
     try {
       await this.internalSendMessage(message);
     } catch (error) {
-      if (error instanceof HttpError) {
-        this.logger.error(`${error.toString()}, original message=${message}`);
-      }
+      this.logger.error(`${error.toString()}, original message=${message}`);
       throw error;
     }
   }
