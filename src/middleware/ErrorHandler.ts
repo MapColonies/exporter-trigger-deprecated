@@ -18,9 +18,10 @@ export class ErrorHandler {
       next: NextFunction
     ): void => {
       this.logger.error(
-        `${req.method} request to ${req.originalUrl}  has failed with error: ${err.message}`
+        `${req.method} request to ${
+          req.originalUrl
+        } has failed with error: ${JSON.stringify(err)}`
       );
-      this.logger.debug(`Error details: ${JSON.stringify(err)}`);
 
       if (err instanceof InputValidationError) {
         res.status(StatusCodes.BAD_REQUEST).json({
