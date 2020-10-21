@@ -45,14 +45,15 @@ export class CommonStorageManager {
 
   public async saveExportData(exportData: IExportData): Promise<void> {
     this.logger.debug('Saving new export data.');
-    await Axios.post(Urls.commonStorage.saveExportDataLink, {
-      body: createStatusResponseBody(exportData),
-    }).catch((error) => {
-      this.logger.error(
-        `Failed saving export data, error=${JSON.stringify(error)}`
-      );
+
+    try {
+      await Axios.post(Urls.commonStorage.saveExportDataLink, {
+        body: createStatusResponseBody(exportData),
+      });
+    } catch (error) {
+      this.logger.error(`Failed saving export data, data=${exportData}`);
       throw error;
-    });
+    }
 
     this.logger.debug(`Saved export data. Data: ${JSON.stringify(exportData)}`);
   }

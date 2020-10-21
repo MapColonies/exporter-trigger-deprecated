@@ -35,7 +35,7 @@ export class KafkaManager {
     try {
       await this.internalSendMessage(message);
     } catch (error) {
-      this.logger.error(`${error.toString()}, original message=${message}`);
+      this.logger.error(`Failed sending message to kafka, message=${message}`);
       throw error;
     }
   }
