@@ -3,14 +3,13 @@ import httpStatus from 'http-status-codes';
 import { delay, inject, injectable } from 'tsyringe';
 import { v4 as uuidv4 } from 'uuid';
 import { get } from 'config';
+import { MCLogger } from '@map-colonies/mc-logger';
 import { KafkaManager } from '../kafka/manager';
 import { CommonStorageManager } from '../commonStorage/commonStorageManager';
 import { IInboundRequest } from '../model/exportRequest';
 import { ICommonStorageConfig } from '../model/commonStorageConfig';
-import { HttpError } from '../requests/errors/errors';
 import outboundRequestString from '../util/outboundRequestToExport';
 import exportDataString from '../util/exportDataString';
-import { MCLogger } from '@map-colonies/mc-logger';
 
 @injectable()
 export class ExportGeopackageController {
@@ -42,11 +41,6 @@ export class ExportGeopackageController {
         exportDataString(taskId, requestBody)
       );
     } catch (error) {
-      this.logger.error(`Failed export, error=${JSON.stringify(error)}`);
-
-      if (error instanceof HttpError) {
-        return res.status(error.status).json(error.name);
-      }
       return next(error);
     }
 
