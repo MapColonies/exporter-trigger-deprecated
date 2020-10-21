@@ -21,9 +21,9 @@ export class SaveExportDataError extends StatusError {
   public constructor(error: Error, exportData: IExportData) {
     super({
       name: 'Save export status error',
-      message: `Failed saving export data, data=${exportData}, error=${JSON.stringify(
-        error
-      )}`,
+      message: `Failed saving export data, data=${JSON.stringify(
+        exportData
+      )}, error=${JSON.stringify(error)}`,
       stack: error.stack,
     });
   }
