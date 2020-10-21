@@ -90,10 +90,10 @@ components:
           items:
             $ref: '#/components/schemas/layerOption'
         sizeEst:
-          type: number
+          type: integer
           description: the file estimated size (Mb)
         tilesEst:
-          type: number
+          type: integer
           description: the estimated amount of tiles
 
       example:
