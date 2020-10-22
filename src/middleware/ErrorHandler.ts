@@ -31,9 +31,6 @@ export class ErrorHandler {
           },
         });
       } else if (err instanceof HttpError) {
-        this.logger.error(
-          `Error while processing request, error=${JSON.stringify(err)}`
-        );
         res.status(err.status).json(err.name);
       } else {
         res
