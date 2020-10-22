@@ -47,6 +47,9 @@ export class CommonStorageManager {
     try {
       await Axios.post(Urls.commonStorage.saveExportDataLink, {
         body: createStatusResponseBody(exportData),
+        params: {
+          taskId: exportData.taskId,
+        },
       });
     } catch (error) {
       throw new SaveExportDataError(error, exportData);
