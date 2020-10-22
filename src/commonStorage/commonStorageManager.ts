@@ -1,11 +1,15 @@
 import { injectable } from 'tsyringe';
 import { MCLogger } from '@map-colonies/mc-logger';
-import Axios from 'axios';
+import Axios, { AxiosResponse } from 'axios';
 import { get } from 'config';
 import Urls from '../requests/urls';
 import { ICommonStorageConfig } from '../model/commonStorageConfig';
 import { IExportData } from '../model/exportRequest';
-import { createStatusResponseBody } from '../model/exportStatusRequest';
+import {
+  IExportStatusResponse,
+  createStatusResponseBody,
+} from '../model/exportStatusRequest';
+import { GetStatusError, SaveExportDataError } from '../requests/errors/status';
 
 @injectable()
 export class CommonStorageManager {
@@ -18,34 +22,36 @@ export class CommonStorageManager {
     );
   }
 
-  public async getGeopackageExecutionStatus() {
+  public async getGeopackageExecutionStatus(): Promise<IExportStatusResponse> {
     this.logger.debug('Getting geopackage export status');
-    const status = await Axios.get(
-      Urls.commonStorage.getExportStatusLink
-    ).catch((error) => {
-      this.logger.error(
-        `Failed to get export status, error=${JSON.stringify(error)}`
-      );
-      throw error;
-    });
 
-    this.logger.debug(
-      `Got export status from CommonStorage. Status: ${status}`
-    );
-    return status;
+    try {
+      const res: AxiosResponse<IExportStatusResponse> = await Axios.get(
+        Urls.commonStorage.getExportStatusLink
+      );
+      const status: IExportStatusResponse = res.data;
+      this.logger.debug(
+        `Got export status from CommonStorage. Status: ${JSON.stringify(
+          status
+        )}`
+      );
+      return status;
+    } catch (error) {
+      throw new GetStatusError(error);
+    }
   }
 
-  public async saveExportData(exportData: IExportData) {
+  public async saveExportData(exportData: IExportData): Promise<void> {
     this.logger.debug('Saving new export data.');
-    await Axios.post(Urls.commonStorage.saveExportDataLink, {
-      body: createStatusResponseBody(exportData),
-    }).catch((error) => {
-      this.logger.error(
-        `Failed saving export data, error=${JSON.stringify(error)}`
-      );
-      throw error;
-    });
 
-    this.logger.debug(`Saved export data. Data: ${exportData}`);
+    try {
+      await Axios.post(Urls.commonStorage.saveExportDataLink, {
+        body: createStatusResponseBody(exportData),
+      });
+    } catch (error) {
+      throw new SaveExportDataError(error, exportData);
+    }
+
+    this.logger.debug(`Saved export data. Data: ${JSON.stringify(exportData)}`);
   }
 }

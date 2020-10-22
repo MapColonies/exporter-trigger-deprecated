@@ -4,6 +4,11 @@ import { MCLogger } from '@map-colonies/mc-logger';
 import { get } from 'config';
 import { Kafka, Producer } from 'kafkajs';
 import { IKafkaConfig } from '../model/kafkaConfig';
+import {
+  KafkaConnectionError,
+  KafkaDisconnectError,
+  KafkaSendError,
+} from '../requests/errors/kafka';
 
 @injectable()
 export class KafkaManager {
@@ -25,28 +30,43 @@ export class KafkaManager {
     this.producer = kafka.producer();
   }
 
-  protected async internalSendMessage(message: string) {
-    await this.producer.connect();
-    await this.producer.send({
-      topic: this.kafkaConfig.topic,
-      messages: [
-        {
-          value: message,
-        },
-      ],
-    });
-    await this.producer.disconnect();
+  public async sendMessage(message: string): Promise<void> {
+    this.logger.debug(`sendMessage to kafka: message=${message}`);
+    try {
+      await this.internalSendMessage(message);
+    } catch (error) {
+      this.logger.error(`Failed sending message to kafka, message=${message}`);
+      throw error;
+    }
   }
 
-  public async sendMessage(message: string) {
-    this.logger.debug(`sendMessage to kafka: message=${message}`);
-    await this.internalSendMessage(message).catch((error) => {
-      this.logger.error(
-        `Failed to send to kafka error=${JSON.stringify(
-          error
-        )}, original message=${message}`
-      );
-      throw error;
-    });
+  protected async internalSendMessage(message: string): Promise<void> {
+    try {
+      await this.producer.connect();
+    } catch (error) {
+      const err = error as Error;
+      throw new KafkaConnectionError(err.message, err.stack);
+    }
+
+    try {
+      await this.producer.send({
+        topic: this.kafkaConfig.topic,
+        messages: [
+          {
+            value: message,
+          },
+        ],
+      });
+    } catch (error) {
+      const err = error as Error;
+      throw new KafkaSendError(message, err.message, err.stack);
+    }
+
+    try {
+      await this.producer.disconnect();
+    } catch (error) {
+      const err = error as Error;
+      throw new KafkaDisconnectError(err.message, err.stack);
+    }
   }
 }

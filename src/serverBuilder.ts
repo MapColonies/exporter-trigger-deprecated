@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import * as bodyparser from 'body-parser';
 import { initAsync as validatorInit } from 'openapi-validator-middleware';
 import { MCLogger } from '@map-colonies/mc-logger';
@@ -6,7 +7,6 @@ import { injectable } from 'tsyringe';
 import { RequestLogger } from './middleware/RequestLogger';
 import { ErrorHandler } from './middleware/ErrorHandler';
 import { globalRouter } from './routers/global';
-import cors from 'cors';
 
 @injectable()
 export class ServerBuilder {
@@ -25,7 +25,6 @@ export class ServerBuilder {
     await validatorInit('./docs/openapi3.yaml');
 
     this.registerMiddlewares();
-    this.serverInstance.use(globalRouter);
 
     return this.serverInstance;
   }
@@ -34,6 +33,7 @@ export class ServerBuilder {
     this.serverInstance.use(cors());
     this.serverInstance.use(bodyparser.json());
     this.serverInstance.use(this.requestLogger.getLoggerMiddleware());
+    this.serverInstance.use(globalRouter);
     this.serverInstance.use(this.errorHandler.getErrorHandlerMiddleware());
   }
 }

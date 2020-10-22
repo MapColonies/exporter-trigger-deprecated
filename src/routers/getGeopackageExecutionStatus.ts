@@ -7,7 +7,7 @@ const controller = container.resolve(GetExecutionStatusController);
 
 getExecutionStatusRouter.get(
   '/',
-  controller.exportRequestHandler.bind(controller)
+  controller.exportStatusRequestHandler.bind(controller)
 );
 
 export { getExecutionStatusRouter };

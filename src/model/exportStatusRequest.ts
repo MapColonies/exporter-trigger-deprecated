@@ -1,6 +1,6 @@
 import { IExportData } from '../model/exportRequest';
 
-interface IExportStatusResponse {
+export interface IExportStatusResponse {
   taskId: string;
   fileName: string;
   sizeEst: number;

@@ -3,7 +3,7 @@ export interface IInboundRequest {
   directoryName: string;
   sizeEst: number;
   tilesEst: number;
-  bbox: Array<number>;
+  bbox: number[];
   exportedLayers: ILayerData[];
 }
 
@@ -16,7 +16,7 @@ export interface IOutboundRequest {
   taskId: string;
   fileName: string;
   url: string;
-  bbox: Array<number>;
+  bbox: number[];
 }
 
 export interface IExportData {
@@ -24,5 +24,5 @@ export interface IExportData {
   fileName: string;
   sizeEst: number;
   tilesEst: number;
-  bbox: Array<number>;
+  bbox: number[];
 }
