@@ -43,7 +43,7 @@ export class SwaggerController {
     initDotEnv();
     const host: string = process.env.HOST ?? 'http://localhost';
     const port: string =
-      process.env.SERVER_PORT ?? this.swaggerConfig.portOverride;
+      this.swaggerConfig.portOverride ?? process.env.SERVER_PORT;
     const servers = this.swaggerDoc.servers as SwaggerServer[];
     servers[0].url = `${host}:${port}`;
   }
