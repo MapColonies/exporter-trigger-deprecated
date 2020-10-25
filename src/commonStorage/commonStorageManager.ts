@@ -45,12 +45,15 @@ export class CommonStorageManager {
     this.logger.debug('Saving new export data.');
 
     try {
-      await Axios.post(Urls.commonStorage.saveExportDataLink, {
-        body: createStatusResponseBody(exportData),
-        params: {
-          taskId: exportData.taskId,
-        },
-      });
+      await Axios.post(
+        Urls.commonStorage.saveExportDataLink,
+        createStatusResponseBody(exportData),
+        {
+          params: {
+            taskId: exportData.taskId,
+          },
+        }
+      );
     } catch (error) {
       throw new SaveExportDataError(error, exportData);
     }
