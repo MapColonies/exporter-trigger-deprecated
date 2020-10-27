@@ -17,15 +17,15 @@ export interface IExportStatusResponse {
   };
   status: string;
   link: string;
-  creationDate: string;
-  lastUpdateTime: string;
+  creationDate: Date;
+  lastUpdateTime: Date;
   progress: number;
 }
 
 export function createStatusResponseBody(
   exportData: IExportData
 ): IExportStatusResponse {
-  const currentDate = new Date().toISOString();
+  const currentDate = new Date(new Date().toUTCString());
 
   return {
     taskId: exportData.taskId,
