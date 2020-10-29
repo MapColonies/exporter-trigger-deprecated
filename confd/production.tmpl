@@ -1,19 +1,19 @@
 {
   "swagger": {
-    "jsonPath": "{{ getv "/configuration/swagger/json_path" "/api-json" }}",
-    "uiPath": "{{ getv "/configuration/swagger/ui_path" "/api-docs" }}",
+    "jsonPath": "{{ getv "/configuration/swagger/json/path" "/api-json" }}",
+    "uiPath": "{{ getv "/configuration/swagger/ui/path" "/api-docs" }}",
     "portOverride": "{{ getv "/configuration/swagger/port" "80" }}"
   },
   "logger": {
     "level": "{{ getv "/configuration/logger/level" "error" }}"
   },
   "kafka": {
-    "clientId": "{{ getv "/configuration/kafka/client_id" "exporter-trigger" }}",
+    "clientId": "{{ getv "/configuration/kafka/client/id" "exporter-trigger" }}",
     "brokers": {{ getv "/configuration/kafka/brokers" "[\"10.28.11.49:9092\"]" }},
     "topic": "{{ getv "/configuration/kafka/topic" "topic-test-7" }}"
   },
   "commonStorage": {
-    "url": "{{ getv "/configuration/elastic/service_url" "http://127.0.0.1:8080" }}",
+    "url": "{{ getv "/configuration/elastic/service/url" "http://127.0.0.1:8080" }}",
     "index": "{{ getv "/configuration/elastic/index" "test" }}"
   }
 }
