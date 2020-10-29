@@ -13,7 +13,7 @@ export class HttpError extends Error {
   }
 
   public toString = (): string => {
-    const stackString = this.stack ? ` Stack=${this.stack}` : '';
+    const stackString = this.stack != undefined ? ` Stack=${this.stack}` : '';
     return `${this.message}.${stackString}`;
   };
 }
