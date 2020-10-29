@@ -3,10 +3,12 @@ src = "production.tmpl"
 dest = "/config/production.json"
 keys = [
     "/configuration/logger/level",
-    "/configuration/swagger/jsonPath",
-    "/configuration/swagger/uiPath",
+    "/configuration/swagger/json_path",
+    "/configuration/swagger/ui_path",
     "/configuration/swagger/port",
-    "/configuration/kafka/clientId",
+    "/configuration/kafka/client_id",
     "/configuration/kafka/brokers",
-    "/configuration/kafka/topic"
+    "/configuration/kafka/topic",
+    "/configuration/elastic/service_url",
+    "/configuration/elastic/index"
 ]
