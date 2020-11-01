@@ -10,6 +10,8 @@ import { IInboundRequest } from '../model/exportRequest';
 import { ICommonStorageConfig } from '../model/commonStorageConfig';
 import outboundRequestString from '../util/outboundRequestToExport';
 import exportDataString from '../util/exportDataString';
+import validateBboxArea from '../util/validateBboxArea';
+import { BboxAreaValidationError } from '../requests/errors/export';
 
 @injectable()
 export class ExportGeopackageController {
@@ -37,9 +39,15 @@ export class ExportGeopackageController {
     try {
       const messageToSend = outboundRequestString(taskId, requestBody);
       await this.kafkaManager.sendMessage(messageToSend);
-      await this.commonStorageManager.saveExportData(
-        exportDataString(taskId, requestBody)
-      );
+
+      const exportData = exportDataString(taskId, requestBody);
+      const bbox = exportData.bbox;
+      const valid = validateBboxArea(bbox);
+      if (!valid) {
+        throw new BboxAreaValidationError(bbox);
+      }
+
+      await this.commonStorageManager.saveExportData(exportData);
     } catch (error) {
       return next(error);
     }

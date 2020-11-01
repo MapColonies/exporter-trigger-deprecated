@@ -15,5 +15,8 @@
   "commonStorage": {
     "url": "{{ getv "/configuration/elastic/node" "http://127.0.0.1:8080" }}",
     "index": "{{ getv "/configuration/elastic/index" "test" }}"
+  },
+  "bbox": {
+    "limit": "{{ getv "/configuration/bbox/area/square/km/limit" "10000" }}"
   }
 }
