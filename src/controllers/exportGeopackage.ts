@@ -11,7 +11,6 @@ import { ICommonStorageConfig } from '../model/commonStorageConfig';
 import outboundRequestString from '../util/outboundRequestToExport';
 import exportDataString from '../util/exportDataString';
 import validateBboxArea from '../util/validateBboxArea';
-import { BboxAreaValidationError } from '../requests/errors/export';
 
 @injectable()
 export class ExportGeopackageController {
