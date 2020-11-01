@@ -1,14 +1,14 @@
 {
   "swagger": {
-    "jsonPath": "{{ getv "/configuration/swagger/jsonPath" "/api-json" }}",
-    "uiPath": "{{ getv "/configuration/swagger/uiPath" "/api-docs" }}",
+    "jsonPath": "{{ getv "/configuration/swagger/json/path" "/api-json" }}",
+    "uiPath": "{{ getv "/configuration/swagger/ui/path" "/api-docs" }}",
     "portOverride": "{{ getv "/configuration/swagger/port" "80" }}"
   },
   "logger": {
     "level": "{{ getv "/configuration/logger/level" "error" }}"
   },
   "kafka": {
-    "clientId": "{{ getv "/configuration/kafka/clientId" "exporter-trigger" }}",
+    "clientId": "{{ getv "/configuration/kafka/client/id" "exporter-trigger" }}",
     "brokers": {{ getv "/configuration/kafka/brokers" "[\"10.28.11.49:9092\"]" }},
     "topic": "{{ getv "/configuration/kafka/topic" "topic-test-7" }}"
   },

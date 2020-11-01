@@ -12,6 +12,7 @@ async function main(): Promise<void> {
   const app = await getApp();
   const probe = container.resolve(Probe);
   await probe.start(app, port);
+  probe.readyFlag = true;
 }
 
 main();
