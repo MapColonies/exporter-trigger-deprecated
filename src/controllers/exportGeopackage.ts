@@ -37,14 +37,15 @@ export class ExportGeopackageController {
     const taskId = uuidv4();
 
     try {
-      // Send message to kafka
-      const messageToSend = outboundRequestString(taskId, requestBody);
-      await this.kafkaManager.sendMessage(messageToSend);
-
+      // Get export data from request body
       const exportData = exportDataString(taskId, requestBody);
       const bbox = exportData.bbox;
       // Validate bbox
       validateBboxArea(bbox);
+
+      // Send message to kafka
+      const messageToSend = outboundRequestString(taskId, requestBody);
+      await this.kafkaManager.sendMessage(messageToSend);
 
       // Save export to storage
       await this.commonStorageManager.saveExportData(exportData);
