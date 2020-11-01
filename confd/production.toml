@@ -9,5 +9,7 @@ keys = [
     "/configuration/kafka/clientId",
     "/configuration/kafka/brokers",
     "/configuration/kafka/topic",
+    "/configuration/elastic/service/url",
+    "/configuration/elastic/index",
     "/configuration/bbox/area/square/km/limit"
 ]
