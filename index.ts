@@ -16,4 +16,7 @@ async function main(): Promise<void> {
   probe.readyFlag = true;
 }
 
-main();
+main()
+  .catch(err => console.log(`main function unhandled exception ${JSON.stringify(err)}`))
+  .then(() => console.log('main ended'))
+  .catch(() => 'obligatory catch');
