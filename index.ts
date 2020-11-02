@@ -7,12 +7,16 @@ import { getApp } from './src/app';
 
 async function main(): Promise<void> {
   initDotEnv();
+  const defaultPort = 80;
   const port =
-    process.env.SERVER_PORT != null ? parseInt(process.env.SERVER_PORT) : 80;
+    process.env.SERVER_PORT != null ? parseInt(process.env.SERVER_PORT) : defaultPort;
   const app = await getApp();
   const probe = container.resolve(Probe);
   await probe.start(app, port);
   probe.readyFlag = true;
 }
 
-main();
+main()
+  .catch(err => console.log(`main function unhandled exception ${JSON.stringify(err)}`))
+  .then(() => console.log('main ended'))
+  .catch(() => 'obligatory catch');

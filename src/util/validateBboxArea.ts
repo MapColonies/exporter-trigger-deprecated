@@ -1,14 +1,14 @@
 import { get } from 'config';
-import { IBboxConfig } from '../model/bboxConfig';
 import { BBox } from '@turf/helpers';
 import bboxPolygon from '@turf/bbox-polygon';
 import area from '@turf/area';
+import { IBboxConfig } from '../model/bboxConfig';
 import {
   BboxValidationError,
   BboxAreaValidationError,
 } from '../requests/errors/export';
 
-export default function validateBboxArea(bbox: number[]) {
+export default function validateBboxArea(bbox: number[]): void {
   const config: IBboxConfig = get('bbox');
   const limit = config.limit;
   let polygonArea;

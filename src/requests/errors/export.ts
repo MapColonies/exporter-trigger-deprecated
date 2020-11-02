@@ -1,6 +1,6 @@
-import { BadRequestError } from './errors';
 import { get } from 'config';
 import { IBboxConfig } from '../../model/bboxConfig';
+import { BadRequestError } from './errors';
 
 const config: IBboxConfig = get('bbox');
 const limit = config.limit;
@@ -21,7 +21,7 @@ export class BboxValidationError extends ExportDataValidationError {
   public constructor(error: Error, bbox: number[]) {
     super({
       name: error.name,
-      message: `Error validating bbox, Cause: ${error.message}, Bbox=${bbox}`,
+      message: `Error validating bbox, Cause: ${error.message}, Bbox=${JSON.stringify(bbox)}`,
     });
 
     // Set the prototype explicitly.
