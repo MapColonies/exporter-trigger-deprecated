@@ -7,8 +7,8 @@ export interface IExportStatusResponse {
   fileName: string;
   directoryName: string;
   fileURI: string;
-  estimatedFileSize: string;
-  realFileSize: string;
+  estimatedFileSize: number;
+  realFileSize: number;
   tilesEst: number;
   geometry: Polygon;
   status: string;
@@ -30,7 +30,7 @@ export function createStatusResponseBody(
     fileName: exportData.fileName,
     directoryName: exportData.directoryName,
     estimatedFileSize: exportData.sizeEst,
-    realFileSize: '',
+    realFileSize: 0,
     tilesEst: exportData.tilesEst,
     geometry: polygon,
     status: 'pending',

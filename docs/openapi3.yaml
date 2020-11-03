@@ -93,7 +93,7 @@ components:
           type: number
           description: the file estimated size (Mb)
         tilesEst:
-          type: integer
+          type: number
           description: the estimated amount of tiles
 
       example:

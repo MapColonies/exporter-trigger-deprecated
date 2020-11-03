@@ -38,6 +38,7 @@ export class ExportGeopackageController {
 
     try {
       // Get export data from request body
+      console.log(requestBody);
       const exportData = exportDataString(taskId, requestBody);
       const bbox = exportData.bbox;
 

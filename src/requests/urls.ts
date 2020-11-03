@@ -4,7 +4,7 @@ const commonStorageConfig: ICommonStorageConfig = get('commonStorage');
 
 export default {
   commonStorage: {
-    getExportStatusLink: `${commonStorageConfig.url}/indexes/${commonStorageConfig.index}/document`,
-    saveExportDataLink: `${commonStorageConfig.url}/indexes/${commonStorageConfig.index}/document`,
+    getExportStatusLink: `${commonStorageConfig.url}/statuses`,
+    saveExportDataLink: `${commonStorageConfig.url}/statuses`,
   },
 };
