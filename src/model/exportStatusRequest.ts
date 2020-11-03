@@ -1,24 +1,20 @@
+import { Polygon } from '@turf/helpers';
 import { IExportData } from '../model/exportRequest';
 
 export interface IExportStatusResponse {
   taskId: string;
+  userId: string;
   fileName: string;
-  sizeEst: number;
+  directoryName: string;
+  fileURI: string;
+  estimatedFileSize: number;
+  realFileSize: number;
   tilesEst: number;
-  bbox: {
-    topRight: {
-      lat: number;
-      lon: number;
-    };
-    bottomLeft: {
-      lat: number;
-      lon: number;
-    };
-  };
+  geometry: Polygon;
   status: string;
-  link: string;
-  creationDate: Date;
-  lastUpdateTime: Date;
+  creationTime: Date;
+  updatedTime: Date;
+  expirationTime: Date;
   progress: number;
 }
 
@@ -26,26 +22,21 @@ export function createStatusResponseBody(
   exportData: IExportData
 ): IExportStatusResponse {
   const currentDate = new Date(new Date().toUTCString());
-
+  const userId = 'tester';
   return {
     taskId: exportData.taskId,
+    userId: userId,
+    fileURI: '',
     fileName: exportData.fileName,
-    sizeEst: exportData.sizeEst,
+    directoryName: exportData.directoryName,
+    estimatedFileSize: exportData.sizeEst,
+    realFileSize: 0,
     tilesEst: exportData.tilesEst,
-    bbox: {
-      topRight: {
-        lat: exportData.bbox[3],
-        lon: exportData.bbox[2],
-      },
-      bottomLeft: {
-        lat: exportData.bbox[1],
-        lon: exportData.bbox[0],
-      },
-    },
+    geometry: exportData.polygon,
     status: 'pending',
-    link: '',
-    creationDate: currentDate,
-    lastUpdateTime: currentDate,
+    creationTime: currentDate,
+    expirationTime: currentDate, // todo: set expiration
+    updatedTime: currentDate,
     progress: 0,
   };
 }

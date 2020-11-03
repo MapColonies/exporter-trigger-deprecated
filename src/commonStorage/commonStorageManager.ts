@@ -17,9 +17,7 @@ export class CommonStorageManager {
 
   public constructor(private readonly logger: MCLogger) {
     this.config = get('commonStorage');
-    logger.info(
-      `Status manager created. url=${this.config.url}, index=${this.config.index}`
-    );
+    logger.info(`Status manager created. url=${ this.config.url }`);
   }
 
   public async getGeopackageExecutionStatus(): Promise<IExportStatusResponse> {
@@ -27,13 +25,13 @@ export class CommonStorageManager {
 
     try {
       const res: AxiosResponse<IExportStatusResponse> = await Axios.get(
-        Urls.commonStorage.getExportStatusLink
+        Urls.commonStorage.getExportStatusLink,
       );
       const status: IExportStatusResponse = res.data;
       this.logger.debug(
-        `Got export status from CommonStorage. Status: ${JSON.stringify(
-          status
-        )}`
+        `Got export status from CommonStorage. Status: ${ JSON.stringify(
+          status,
+        ) }`,
       );
       return status;
     } catch (error) {
@@ -48,16 +46,11 @@ export class CommonStorageManager {
       await Axios.post(
         Urls.commonStorage.saveExportDataLink,
         createStatusResponseBody(exportData),
-        {
-          params: {
-            taskId: exportData.taskId,
-          },
-        }
       );
     } catch (error) {
       throw new SaveExportDataError(error, exportData);
     }
 
-    this.logger.debug(`Saved export data. Data: ${JSON.stringify(exportData)}`);
+    this.logger.debug(`Saved export data. Data: ${ JSON.stringify(exportData) }`);
   }
 }
