@@ -10,7 +10,6 @@ import {
   createStatusResponseBody,
 } from '../model/exportStatusRequest';
 import { GetStatusError, SaveExportDataError } from '../requests/errors/status';
-import { Polygon } from '@turf/helpers';
 
 @injectable()
 export class CommonStorageManager {
@@ -18,7 +17,7 @@ export class CommonStorageManager {
 
   public constructor(private readonly logger: MCLogger) {
     this.config = get('commonStorage');
-    logger.info(`Status manager created. url=${this.config.url}`);
+    logger.info(`Status manager created. url=${ this.config.url }`);
   }
 
   public async getGeopackageExecutionStatus(): Promise<IExportStatusResponse> {
@@ -26,13 +25,13 @@ export class CommonStorageManager {
 
     try {
       const res: AxiosResponse<IExportStatusResponse> = await Axios.get(
-        Urls.commonStorage.getExportStatusLink
+        Urls.commonStorage.getExportStatusLink,
       );
       const status: IExportStatusResponse = res.data;
       this.logger.debug(
-        `Got export status from CommonStorage. Status: ${JSON.stringify(
-          status
-        )}`
+        `Got export status from CommonStorage. Status: ${ JSON.stringify(
+          status,
+        ) }`,
       );
       return status;
     } catch (error) {
@@ -40,24 +39,18 @@ export class CommonStorageManager {
     }
   }
 
-  public async saveExportData(
-    exportData: IExportData
-  ): Promise<void> {
+  public async saveExportData(exportData: IExportData): Promise<void> {
     this.logger.debug('Saving new export data.');
 
     try {
       await Axios.post(
         Urls.commonStorage.saveExportDataLink,
-        createStatusResponseBody(exportData)
+        createStatusResponseBody(exportData),
       );
     } catch (error) {
-      // for(const a of error.response.data.error.message.validationErrors) {
-      //   console.log(a.params);
-      // }
-      console.log(error.response.data.error.message);
       throw new SaveExportDataError(error, exportData);
     }
 
-    this.logger.debug(`Saved export data. Data: ${JSON.stringify(exportData)}`);
+    this.logger.debug(`Saved export data. Data: ${ JSON.stringify(exportData) }`);
   }
 }
