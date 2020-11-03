@@ -41,15 +41,14 @@ export class CommonStorageManager {
   }
 
   public async saveExportData(
-    exportData: IExportData,
-    polygon: Polygon
+    exportData: IExportData
   ): Promise<void> {
     this.logger.debug('Saving new export data.');
 
     try {
       await Axios.post(
         Urls.commonStorage.saveExportDataLink,
-        createStatusResponseBody(exportData, polygon)
+        createStatusResponseBody(exportData)
       );
     } catch (error) {
       // for(const a of error.response.data.error.message.validationErrors) {
