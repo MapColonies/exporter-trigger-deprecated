@@ -1,6 +1,6 @@
+import { Polygon } from '@turf/helpers';
 import { IExportData, IInboundRequest } from '../model/exportRequest';
 import { BadRequestError } from '../requests/errors/errors';
-import { Polygon } from '@turf/helpers';
 import { getPolygon, validateBboxArea } from './validateBboxArea';
 
 export default function (
