@@ -16,7 +16,7 @@ export function getPolygon(bbox: number[]): Polygon {
   try {
     // Calculate bbox area
     const featurePolygon = bboxPolygon(convertedBbox);
-    polygon = featurePolygon.geometry as Polygon;
+    polygon = featurePolygon.geometry;
   } catch (error) {
     throw new BboxValidationError(error, bbox);
   }

@@ -1,5 +1,5 @@
-import { IExportData } from '../model/exportRequest';
 import { Polygon } from '@turf/helpers';
+import { IExportData } from '../model/exportRequest';
 
 export interface IExportStatusResponse {
   taskId: string;
