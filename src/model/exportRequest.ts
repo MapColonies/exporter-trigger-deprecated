@@ -19,6 +19,7 @@ export interface IOutboundRequest {
   fileName: string;
   url: string;
   bbox: number[];
+  directoryName: string;
 }
 
 export interface IExportData {

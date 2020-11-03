@@ -10,6 +10,7 @@ import {
   createStatusResponseBody,
 } from '../model/exportStatusRequest';
 import { GetStatusError, SaveExportDataError } from '../requests/errors/status';
+import { Polygon } from '@turf/helpers';
 
 @injectable()
 export class CommonStorageManager {
@@ -17,9 +18,7 @@ export class CommonStorageManager {
 
   public constructor(private readonly logger: MCLogger) {
     this.config = get('commonStorage');
-    logger.info(
-      `Status manager created. url=${this.config.url}, index=${this.config.index}`
-    );
+    logger.info(`Status manager created. url=${this.config.url}`);
   }
 
   public async getGeopackageExecutionStatus(): Promise<IExportStatusResponse> {
@@ -41,20 +40,22 @@ export class CommonStorageManager {
     }
   }
 
-  public async saveExportData(exportData: IExportData): Promise<void> {
+  public async saveExportData(
+    exportData: IExportData,
+    polygon: Polygon
+  ): Promise<void> {
     this.logger.debug('Saving new export data.');
 
     try {
       await Axios.post(
         Urls.commonStorage.saveExportDataLink,
-        createStatusResponseBody(exportData),
-        {
-          params: {
-            taskId: exportData.taskId,
-          },
-        }
+        createStatusResponseBody(exportData, polygon)
       );
     } catch (error) {
+      // for(const a of error.response.data.error.message.validationErrors) {
+      //   console.log(a.params);
+      // }
+      console.log(error.response.data.error.message);
       throw new SaveExportDataError(error, exportData);
     }
 

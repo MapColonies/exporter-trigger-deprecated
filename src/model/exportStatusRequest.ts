@@ -19,7 +19,7 @@ export interface IExportStatusResponse {
 }
 
 export function createStatusResponseBody(
-  exportData: IExportData,
+  exportData: IExportData
 ): IExportStatusResponse {
   const currentDate = new Date(new Date().toUTCString());
   const userId = 'tester';

@@ -19,7 +19,7 @@ export default function (
       sizeEst: request.sizeEst,
       tilesEst: request.tilesEst,
       polygon: polygon,
-      directoryName: ''
+      directoryName: 'TEST_DIR'
     };
 
     return exportData;
