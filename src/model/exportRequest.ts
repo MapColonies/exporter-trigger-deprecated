@@ -1,3 +1,5 @@
+import { Polygon } from '@turf/helpers';
+
 export interface IInboundRequest {
   fileName: string;
   directoryName: string;
@@ -22,7 +24,8 @@ export interface IOutboundRequest {
 export interface IExportData {
   taskId: string;
   fileName: string;
+  directoryName: string;
   sizeEst: number;
   tilesEst: number;
-  bbox: number[];
+  polygon: Polygon;
 }
