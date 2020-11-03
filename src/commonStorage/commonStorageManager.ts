@@ -10,6 +10,7 @@ import {
   createStatusResponseBody,
 } from '../model/exportStatusRequest';
 import { GetStatusError, SaveExportDataError } from '../requests/errors/status';
+import { Polygon } from '@turf/helpers';
 
 @injectable()
 export class CommonStorageManager {
@@ -41,13 +42,13 @@ export class CommonStorageManager {
     }
   }
 
-  public async saveExportData(exportData: IExportData): Promise<void> {
+  public async saveExportData(exportData: IExportData, polygon: Polygon): Promise<void> {
     this.logger.debug('Saving new export data.');
 
     try {
       await Axios.post(
         Urls.commonStorage.saveExportDataLink,
-        createStatusResponseBody(exportData),
+        createStatusResponseBody(exportData, polygon),
         {
           params: {
             taskId: exportData.taskId,

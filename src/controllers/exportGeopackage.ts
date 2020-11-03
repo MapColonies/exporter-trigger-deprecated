@@ -10,7 +10,8 @@ import { IInboundRequest } from '../model/exportRequest';
 import { ICommonStorageConfig } from '../model/commonStorageConfig';
 import outboundRequestString from '../util/outboundRequestToExport';
 import exportDataString from '../util/exportDataString';
-import validateBboxArea from '../util/validateBboxArea';
+import { validateBboxArea, getPolygon } from '../util/validateBboxArea';
+import { Polygon } from '@turf/helpers';
 
 @injectable()
 export class ExportGeopackageController {
@@ -39,15 +40,17 @@ export class ExportGeopackageController {
       // Get export data from request body
       const exportData = exportDataString(taskId, requestBody);
       const bbox = exportData.bbox;
+
+      const polygon: Polygon = getPolygon(bbox);
       // Validate bbox
-      validateBboxArea(bbox);
+      validateBboxArea(polygon, bbox);
 
       // Send message to kafka
       const messageToSend = outboundRequestString(taskId, requestBody);
       await this.kafkaManager.sendMessage(messageToSend);
 
       // Save export to storage
-      await this.commonStorageManager.saveExportData(exportData);
+      await this.commonStorageManager.saveExportData(exportData, polygon);
     } catch (error) {
       return next(error);
     }

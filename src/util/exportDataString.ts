@@ -12,6 +12,7 @@ export default function (
       sizeEst: request.sizeEst,
       tilesEst: request.tilesEst,
       bbox: request.bbox,
+      directoryName: ''
     };
 
     return exportData;

@@ -1,7 +1,7 @@
 export interface IInboundRequest {
   fileName: string;
   directoryName: string;
-  sizeEst: number;
+  sizeEst: string;
   tilesEst: number;
   bbox: number[];
   exportedLayers: ILayerData[];
@@ -22,7 +22,8 @@ export interface IOutboundRequest {
 export interface IExportData {
   taskId: string;
   fileName: string;
-  sizeEst: number;
+  directoryName: string;
+  sizeEst: string;
   tilesEst: number;
   bbox: number[];
 }
