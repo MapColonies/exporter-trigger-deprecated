@@ -25,7 +25,8 @@ export function getPolygon(bbox: number[]): Polygon {
 
 export function validateBboxArea(polygon: Polygon, bbox: number[]): void {
   const config: IBboxConfig = get('bbox');
-  const limit = config.limit;
+  const kmSqToMSq = 1000000; // 1000 * 1000
+  const limit = config.limit * kmSqToMSq;
   let polygonArea;
   try {
     polygonArea = area(polygon);
