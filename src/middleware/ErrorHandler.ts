@@ -20,7 +20,9 @@ export class ErrorHandler {
       this.logger.error(
         `${req.method} request to ${
           req.originalUrl
-        } has failed with error: ${JSON.stringify(err)}`
+        } has failed with error: ${JSON.stringify(err)}, and message: '${
+          err.message
+        }'`
       );
 
       if (err instanceof InputValidationError) {
