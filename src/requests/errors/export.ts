@@ -21,7 +21,9 @@ export class BboxValidationError extends ExportDataValidationError {
   public constructor(error: Error, bbox: number[]) {
     super({
       name: error.name,
-      message: `Error validating bbox, Cause: ${error.message}, Bbox=${JSON.stringify(bbox)}`,
+      message: `Error validating bbox, Cause: ${
+        error.message
+      }, Bbox=${JSON.stringify(bbox)}`,
     });
 
     // Set the prototype explicitly.
@@ -34,7 +36,7 @@ export class BboxAreaValidationError extends BboxValidationError {
     super(
       {
         name: 'BBox area validation error.',
-        message: `BBox area exceeds set limit of ${limit}`,
+        message: `BBox area exceeds set limit of ${limit} square km`,
       },
       bbox
     );

@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import httpStatus from 'http-status-codes';
 import { delay, inject, injectable } from 'tsyringe';
 import { CommonStorageManager } from '../commonStorage/commonStorageManager';
-import { IExportStatusResponse } from '../model/exportStatusRequest';
+import { IExportStatusDisplay } from '../model/exportStatus';
 
 @injectable()
 export class GetExecutionStatusController {
@@ -20,7 +20,7 @@ export class GetExecutionStatusController {
     next: NextFunction
   ): Promise<Response | void> {
     try {
-      const status: IExportStatusResponse = await this.commonStorageManager.getGeopackageExecutionStatus();
+      const status: IExportStatusDisplay[] = await this.commonStorageManager.getGeopackageExecutionStatus();
       return res.status(httpStatus.OK).json(status);
     } catch (error) {
       return next(error);

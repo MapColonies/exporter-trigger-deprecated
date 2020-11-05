@@ -1,32 +1,13 @@
-import { Polygon } from '@turf/helpers';
 import { IExportData } from '../model/exportRequest';
+import { IExportStatusData } from '../model/exportStatus';
 
-export interface IExportStatusResponse {
-  taskId: string;
-  userId: string;
-  fileName: string;
-  directoryName: string;
-  fileURI: string;
-  estimatedFileSize: number;
-  realFileSize: number;
-  tilesEst: number;
-  geometry: Polygon;
-  status: string;
-  creationTime: Date;
-  updatedTime: Date;
-  expirationTime: Date;
-  progress: number;
-}
-
-export function createStatusResponseBody(
-  exportData: IExportData
-): IExportStatusResponse {
+export default function (exportData: IExportData): IExportStatusData {
   const currentDate = new Date(new Date().toUTCString());
   const userId = 'tester';
   return {
     taskId: exportData.taskId,
     userId: userId,
-    fileURI: '',
+    fileURI: exportData.directoryName,
     fileName: exportData.fileName,
     directoryName: exportData.directoryName,
     estimatedFileSize: exportData.sizeEst,
