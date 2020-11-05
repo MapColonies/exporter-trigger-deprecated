@@ -5,11 +5,10 @@ import { get } from 'config';
 import Urls from '../requests/urls';
 import { ICommonStorageConfig } from '../model/commonStorageConfig';
 import { IExportData } from '../model/exportRequest';
-import {
-  IExportStatusResponse,
-  createStatusResponseBody,
-} from '../model/exportStatusRequest';
+import { IExportStatusData, IExportStatusDisplay } from '../model/exportStatus';
+import createStatusResponseBody from '../util/requestToStatus';
 import { GetStatusError, SaveExportDataError } from '../requests/errors/status';
+import statusToResponse from '../util/statusToResponse';
 
 @injectable()
 export class CommonStorageManager {
@@ -17,21 +16,23 @@ export class CommonStorageManager {
 
   public constructor(private readonly logger: MCLogger) {
     this.config = get('commonStorage');
-    logger.info(`Status manager created. url=${ this.config.url }`);
+    logger.info(`Status manager created. url=${this.config.url}`);
   }
 
-  public async getGeopackageExecutionStatus(): Promise<IExportStatusResponse> {
+  public async getGeopackageExecutionStatus(): Promise<IExportStatusDisplay[]> {
     this.logger.debug('Getting geopackage export status');
 
     try {
-      const res: AxiosResponse<IExportStatusResponse> = await Axios.get(
-        Urls.commonStorage.getExportStatusLink,
+      const res: AxiosResponse<IExportStatusData[]> = await Axios.get(
+        Urls.commonStorage.getExportStatusLink
       );
-      const status: IExportStatusResponse = res.data;
+      const status: IExportStatusDisplay[] = res.data.map((data) =>
+        statusToResponse(data)
+      );
       this.logger.debug(
-        `Got export status from CommonStorage. Status: ${ JSON.stringify(
-          status,
-        ) }`,
+        `Got export status from CommonStorage. Status: ${JSON.stringify(
+          status
+        )}`
       );
       return status;
     } catch (error) {
@@ -45,12 +46,12 @@ export class CommonStorageManager {
     try {
       await Axios.post(
         Urls.commonStorage.saveExportDataLink,
-        createStatusResponseBody(exportData),
+        createStatusResponseBody(exportData)
       );
     } catch (error) {
       throw new SaveExportDataError(error, exportData);
     }
 
-    this.logger.debug(`Saved export data. Data: ${ JSON.stringify(exportData) }`);
+    this.logger.debug(`Saved export data. Data: ${JSON.stringify(exportData)}`);
   }
 }

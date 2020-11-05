@@ -1,7 +1,7 @@
 import { Polygon } from '@turf/helpers';
 import { IExportData, IInboundRequest } from '../model/exportRequest';
 import { BadRequestError } from '../requests/errors/errors';
-import { getPolygon, validateBboxArea } from './validateBboxArea';
+import { getPolygon } from './validateBboxArea';
 
 export default function (
   taskId: string,
@@ -10,16 +10,14 @@ export default function (
   try {
     const bbox = request.bbox;
     const polygon: Polygon = getPolygon(bbox);
-    // Validate bbox
-    validateBboxArea(polygon, bbox);
 
     const exportData: IExportData = {
       taskId: taskId,
+      directoryName: request.directoryName,
       fileName: request.fileName,
       sizeEst: request.sizeEst,
       tilesEst: request.tilesEst,
       polygon: polygon,
-      directoryName: 'TEST_DIR'
     };
 
     return exportData;

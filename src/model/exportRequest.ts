@@ -16,10 +16,10 @@ export interface ILayerData {
 
 export interface IOutboundRequest {
   taskId: string;
+  directoryName: string;
   fileName: string;
   url: string;
   bbox: number[];
-  directoryName: string;
 }
 
 export interface IExportData {

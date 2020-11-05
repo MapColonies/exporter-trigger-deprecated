@@ -10,6 +10,7 @@ import { IInboundRequest } from '../model/exportRequest';
 import { ICommonStorageConfig } from '../model/commonStorageConfig';
 import outboundRequestString from '../util/outboundRequestToExport';
 import exportDataString from '../util/exportDataString';
+import { validateBboxArea } from '../util/validateBboxArea';
 
 @injectable()
 export class ExportGeopackageController {
@@ -37,6 +38,9 @@ export class ExportGeopackageController {
     try {
       // Get export data from request body
       const exportData = exportDataString(taskId, requestBody);
+
+      // Validate bbox
+      validateBboxArea(exportData.polygon, requestBody.bbox);
 
       // Save export to storage
       await this.commonStorageManager.saveExportData(exportData);
