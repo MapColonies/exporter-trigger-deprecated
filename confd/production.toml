@@ -10,5 +10,6 @@ keys = [
     "/configuration/kafka/brokers",
     "/configuration/kafka/topic",
     "/configuration/elastic/service/url",
+    "/configuration/elastic/export/expiration/days",
     "/configuration/bbox/area/square/km/limit"
 ]

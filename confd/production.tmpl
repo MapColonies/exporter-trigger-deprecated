@@ -13,7 +13,8 @@
     "topic": "{{ getv "/configuration/kafka/topic" "topic-test-7" }}"
   },
   "commonStorage": {
-    "url": "{{ getv "/configuration/elastic/service/url" "http://127.0.0.1:8081" }}"
+    "url": "{{ getv "/configuration/elastic/service/url" "http://127.0.0.1:8081" }}",
+    "expirationTime": {{ getv "/configuration/elastic/export/expiration/days" "30" }}
   },
   "bbox": {
     "limit": "{{ getv "/configuration/bbox/area/square/km/limit" "10000" }}"
