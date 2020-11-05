@@ -13,11 +13,11 @@ export default function (
 
     const exportData: IExportData = {
       taskId: taskId,
+      directoryName: request.directoryName,
       fileName: request.fileName,
       sizeEst: request.sizeEst,
       tilesEst: request.tilesEst,
       polygon: polygon,
-      directoryName: 'TEST_DIR',
     };
 
     return exportData;
