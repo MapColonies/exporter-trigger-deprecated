@@ -1,4 +1,3 @@
-import { BBox } from '@turf/helpers/lib/geojson';
 import { IExportStatusData, IExportStatusDisplay } from '../model/exportStatus';
 
 export default function (statusData: IExportStatusData): IExportStatusDisplay {
