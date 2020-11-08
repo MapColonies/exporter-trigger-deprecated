@@ -73,7 +73,6 @@ components:
         - directoryName
         - exportedLayers
         - sizeEst
-        - tilesEst
       type: object
       properties:
         fileName:
@@ -92,9 +91,6 @@ components:
         sizeEst:
           type: number
           description: the file estimated size (Mb)
-        tilesEst:
-          type: number
-          description: the estimated amount of tiles
 
       example:
         fileName: test_file
@@ -110,4 +106,3 @@ components:
           - url: http://test/geoserver/ows?service=wms
             exportType: raster
         sizeEst: 30
-        tilesEst: 10

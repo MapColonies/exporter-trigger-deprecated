@@ -8,7 +8,6 @@ export interface IExportStatusData {
   fileURI: string;
   estimatedFileSize: number;
   realFileSize: number;
-  tilesEst: number;
   geometry: Polygon;
   status: string;
   creationTime: Date;
@@ -23,7 +22,6 @@ export interface IExportStatusDisplay {
   directoryName: string;
   fileName: string;
   sizeEst: number;
-  tilesEst: number;
   polygon: Polygon;
   status: string;
   link: string;

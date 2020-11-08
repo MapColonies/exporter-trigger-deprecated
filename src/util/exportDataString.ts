@@ -16,7 +16,6 @@ export default function (
       directoryName: request.directoryName,
       fileName: request.fileName,
       sizeEst: request.sizeEst,
-      tilesEst: request.tilesEst,
       polygon: polygon,
     };
 

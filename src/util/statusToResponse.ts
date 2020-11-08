@@ -9,7 +9,6 @@ export default function (statusData: IExportStatusData): IExportStatusDisplay {
     directoryName: statusData.directoryName,
     fileName: statusData.fileName,
     sizeEst: statusData.estimatedFileSize,
-    tilesEst: statusData.tilesEst,
     polygon: polygon,
     status: statusData.status,
     link: statusData.fileURI,

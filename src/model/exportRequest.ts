@@ -4,7 +4,6 @@ export interface IInboundRequest {
   fileName: string;
   directoryName: string;
   sizeEst: number;
-  tilesEst: number;
   bbox: number[];
   exportedLayers: ILayerData[];
 }
@@ -27,6 +26,5 @@ export interface IExportData {
   fileName: string;
   directoryName: string;
   sizeEst: number;
-  tilesEst: number;
   polygon: Polygon;
 }
