@@ -2,6 +2,7 @@ import { injectable } from 'tsyringe';
 import { MCLogger } from '@map-colonies/mc-logger';
 import Axios, { AxiosResponse, AxiosError } from 'axios';
 import { get } from 'config';
+import { StatusCodes } from 'http-status-codes';
 import Urls from '../requests/urls';
 import { ICommonStorageConfig } from '../model/commonStorageConfig';
 import { IExportData } from '../model/exportRequest';
@@ -54,8 +55,8 @@ export class CommonStorageManager {
         requestToStatus(exportData)
       );
     } catch (error) {
-      const err: AxiosError = error;
-      if (err.response?.status == 400) {
+      const err: AxiosError = error as AxiosError;
+      if (err.response?.status == StatusCodes.CONFLICT) {
         throw new ExportDataDuplicationError(error, exportData);
       }
       throw new SaveExportDataError(error, exportData);
