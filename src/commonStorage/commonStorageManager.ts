@@ -1,14 +1,20 @@
 import { injectable } from 'tsyringe';
 import { MCLogger } from '@map-colonies/mc-logger';
-import Axios, { AxiosResponse } from 'axios';
+import Axios, { AxiosResponse, AxiosError } from 'axios';
 import { get } from 'config';
+import { StatusCodes } from 'http-status-codes';
 import Urls from '../requests/urls';
 import { ICommonStorageConfig } from '../model/commonStorageConfig';
 import { IExportData } from '../model/exportRequest';
 import { IExportStatusData, IExportStatusDisplay } from '../model/exportStatus';
-import createStatusResponseBody from '../util/requestToStatus';
-import { GetStatusError, SaveExportDataError } from '../requests/errors/status';
+import requestToStatus from '../util/requestToStatus';
+import {
+  GetStatusError,
+  SaveExportDataError,
+  DeleteExportDataError,
+} from '../requests/errors/status';
 import statusToResponse from '../util/statusToResponse';
+import { ExportDataDuplicationError } from '../requests/errors/export';
 
 @injectable()
 export class CommonStorageManager {
@@ -46,12 +52,28 @@ export class CommonStorageManager {
     try {
       await Axios.post(
         Urls.commonStorage.saveExportDataLink,
-        createStatusResponseBody(exportData)
+        requestToStatus(exportData)
       );
     } catch (error) {
+      const err: AxiosError = error as AxiosError;
+      if (err.response?.status == StatusCodes.CONFLICT) {
+        throw new ExportDataDuplicationError(error, exportData);
+      }
       throw new SaveExportDataError(error, exportData);
     }
 
     this.logger.debug(`Saved export data. Data: ${JSON.stringify(exportData)}`);
+  }
+
+  public async deleteExportData(taskId: string): Promise<void> {
+    this.logger.debug(`Deleting export data. uuid=${taskId}`);
+
+    try {
+      await Axios.post(Urls.commonStorage.deleteExportDataLink, [taskId]);
+    } catch (error) {
+      throw new DeleteExportDataError(error, taskId);
+    }
+
+    this.logger.debug(`Deleted export data for uuid=${taskId}`);
   }
 }

@@ -6,5 +6,6 @@ export default {
   commonStorage: {
     getExportStatusLink: `${commonStorageConfig.url}/statuses`,
     saveExportDataLink: `${commonStorageConfig.url}/statuses`,
+    deleteExportDataLink: `${commonStorageConfig.url}/statuses/delete`,
   },
 };
