@@ -28,3 +28,11 @@ export interface IExportData {
   sizeEst: number;
   polygon: Polygon;
 }
+
+export interface IExportDataUpdate {
+  taskId: string;
+  fileName?: string;
+  directoryName?: string;
+  sizeEst?: number;
+  polygon?: Polygon;
+}

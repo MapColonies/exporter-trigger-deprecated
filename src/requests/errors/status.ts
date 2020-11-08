@@ -13,7 +13,7 @@ export class StatusError extends InternalServerError {
 export class GetStatusError extends StatusError {
   public constructor(error: Error) {
     super({
-      name: 'Get status error',
+      name: 'ERR_GET_STATUS',
       message: `Failed to get export status, error=${JSON.stringify(error)}`,
       stack: error.stack,
     });
@@ -26,7 +26,7 @@ export class GetStatusError extends StatusError {
 export class SaveExportDataError extends StatusError {
   public constructor(error: Error, exportData: IExportData) {
     super({
-      name: 'Save export status error',
+      name: 'ERR_SAVE_EXPORT_STATUS',
       message: `Failed saving export data, data=${JSON.stringify(
         exportData
       )}, error=${JSON.stringify(error)}`,
@@ -35,5 +35,20 @@ export class SaveExportDataError extends StatusError {
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, SaveExportDataError.prototype);
+  }
+}
+
+export class DeleteExportDataError extends StatusError {
+  public constructor(error: Error, taskId: string) {
+    super({
+      name: 'ERR_DELETE_EXPORT',
+      message: `Failed to delete export data, uuid=${taskId}, error=${JSON.stringify(
+        error
+      )}`,
+      stack: error.stack,
+    });
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, DeleteExportDataError.prototype);
   }
 }
