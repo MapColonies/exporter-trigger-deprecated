@@ -2,7 +2,7 @@ import { injectable } from 'tsyringe';
 import { MCLogger } from '@map-colonies/mc-logger';
 
 import { get } from 'config';
-import { Kafka, Producer } from 'kafkajs';
+import { Kafka, Producer, Partitioners } from 'kafkajs';
 import { IKafkaConfig } from '../model/kafkaConfig';
 import {
   KafkaConnectionError,
@@ -27,7 +27,9 @@ export class KafkaManager {
       clientId: this.kafkaConfig.clientId,
       brokers: this.kafkaConfig.brokers,
     });
-    this.producer = kafka.producer();
+     this.producer = kafka.producer({
+      createPartitioner: Partitioners.DefaultPartitioner,
+    });
   }
 
   public async sendMessage(message: string): Promise<void> {
