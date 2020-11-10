@@ -27,6 +27,15 @@ export class BadRequestError extends HttpError {
   }
 }
 
+export class ConflictError extends HttpError {
+  public constructor(error: Error) {
+    super(HttpStatus.CONFLICT, error);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, ConflictError.prototype);
+  }
+}
+
 export class InternalServerError extends HttpError {
   public constructor(error: Error) {
     super(HttpStatus.INTERNAL_SERVER_ERROR, error);
