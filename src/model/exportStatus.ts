@@ -22,6 +22,7 @@ export interface IExportStatusDisplay {
   directoryName: string;
   fileName: string;
   sizeEst: number;
+  realSize: number;
   polygon: Polygon;
   status: string;
   link: string;
