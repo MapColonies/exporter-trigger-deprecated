@@ -6,6 +6,7 @@ import { IBboxConfig } from '../model/bboxConfig';
 import {
   BboxValidationError,
   BboxAreaValidationError,
+  BboxLimit,
 } from '../requests/errors/export';
 
 export function getPolygon(bbox: number[]): Polygon {
@@ -34,6 +35,8 @@ export function validateBboxArea(polygon: Polygon, bbox: number[]): void {
     throw new BboxValidationError(error, bbox);
   }
   if (polygonArea > limit) {
-    throw new BboxAreaValidationError(bbox);
+    throw new BboxAreaValidationError(bbox, BboxLimit.EXCEEDS);
+  } else if (polygonArea < 1) {
+    throw new BboxAreaValidationError(bbox, BboxLimit.TOO_SMALL);
   }
 }

@@ -6,10 +6,27 @@ import { BadRequestError } from './errors';
 const config: IBboxConfig = get('bbox');
 const limit = config.limit;
 
+export enum BboxLimit {
+  EXCEEDS,
+  TOO_SMALL,
+}
+
+function getLimitErrorMessage(limitKind: BboxLimit): string {
+  return limitKind == BboxLimit.EXCEEDS
+    ? `BBox area exceeds set limit of ${limit} square km`
+    : 'BBox area cannot be smaller than 1 square meter';
+}
+
+function getLimitErrorName(limitKind: BboxLimit): string {
+  return limitKind == BboxLimit.EXCEEDS
+    ? 'ERR_BBOX_AREA_TOO_LARGE'
+    : 'ERR_BBOX_AREA_TOO_SMALL';
+}
+
 export class ExportDataValidationError extends BadRequestError {
   public constructor(error: Error) {
     super({
-      name: 'ERR_EXPORT_DATA_VALIDATION',
+      name: error.name,
       message: `Failed in export validation, reason=${error.message}}`,
     });
 
@@ -33,11 +50,11 @@ export class BboxValidationError extends ExportDataValidationError {
 }
 
 export class BboxAreaValidationError extends BboxValidationError {
-  public constructor(bbox: number[]) {
+  public constructor(bbox: number[], limitViolation: BboxLimit) {
     super(
       {
-        name: 'ERR_BBOX_AREA_VALIDATION',
-        message: `BBox area exceeds set limit of ${limit} square km`,
+        name: getLimitErrorName(limitViolation),
+        message: getLimitErrorMessage(limitViolation),
       },
       bbox
     );
