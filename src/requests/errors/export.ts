@@ -11,13 +11,13 @@ export enum BboxLimit {
   TOO_SMALL,
 }
 
-function getLimitErrorMessage(limitKind: BboxLimit) {
+function getLimitErrorMessage(limitKind: BboxLimit): string {
   return limitKind == BboxLimit.EXCEEDS
     ? `BBox area exceeds set limit of ${limit} square km`
     : 'BBox area cannot be smaller than 1 square meter';
 }
 
-function getLimitErrorName(limitKind: BboxLimit) {
+function getLimitErrorName(limitKind: BboxLimit): string {
   return limitKind == BboxLimit.EXCEEDS
     ? 'ERR_BBOX_AREA_TOO_LARGE'
     : 'ERR_BBOX_AREA_TOO_SMALL';
