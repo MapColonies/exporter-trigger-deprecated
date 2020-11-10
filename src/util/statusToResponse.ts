@@ -8,7 +8,7 @@ export default function (statusData: IExportStatusData): IExportStatusDisplay {
     userId: statusData.userId,
     directoryName: statusData.directoryName,
     fileName: statusData.fileName,
-    sizeEst: statusData.estimatedFileSize,
+    realSize: statusData.realFileSize,
     polygon: polygon,
     status: statusData.status,
     link: statusData.fileURI,
