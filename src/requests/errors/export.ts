@@ -1,7 +1,7 @@
 import { get } from 'config';
 import { IBboxConfig } from '../../model/bboxConfig';
 import { IExportData } from '../../model/exportRequest';
-import { BadRequestError } from './errors';
+import { BadRequestError, ConflictError } from './errors';
 
 const config: IBboxConfig = get('bbox');
 const limit = config.limit;
@@ -64,7 +64,7 @@ export class BboxAreaValidationError extends BboxValidationError {
   }
 }
 
-export class ExportDataDuplicationError extends BadRequestError {
+export class ExportDataDuplicationError extends ConflictError {
   public constructor(error: Error, exportData: IExportData) {
     super({
       name: 'ERR_EXPORT_DATA_DUPLICATION',
