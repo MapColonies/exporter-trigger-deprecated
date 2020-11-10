@@ -81,9 +81,11 @@ components:
         fileName:
           type: string
           description: the file name to be created on shared folder
+          pattern: '^[a-zA-Z0-9_-]+$'          
         directoryName:
           type: string
           description: the directory name to be created on shared folder
+          pattern: '^[a-zA-Z0-9_-]+$'          
         bbox:
           type: array
           items:
