@@ -19,8 +19,11 @@ export class HttpError extends Error {
 }
 
 export class BadRequestError extends HttpError {
-  public constructor(error: Error) {
+  public data: unknown;
+
+  public constructor(error: Error, data?: unknown) {
     super(HttpStatus.BAD_REQUEST, error);
+    this.data = data;
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, BadRequestError.prototype);

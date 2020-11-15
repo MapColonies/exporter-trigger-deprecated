@@ -8,7 +8,7 @@ export default function (exportData: IExportData): IExportStatusData {
   const currentDate = new Date(new Date().toUTCString());
   const expirationTime = new Date(currentDate);
   expirationTime.setDate(expirationTime.getDate() + config.expirationTime);
-  const userId = 'tester';
+  const userId = 'tester'; // TODO: replace with request value
   return {
     taskId: exportData.taskId,
     userId: userId,

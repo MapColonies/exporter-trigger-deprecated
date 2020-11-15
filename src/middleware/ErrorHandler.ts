@@ -3,7 +3,7 @@ import { Request, Response, NextFunction, ErrorRequestHandler } from 'express';
 import { injectable } from 'tsyringe';
 import { StatusCodes } from 'http-status-codes';
 import { InputValidationError } from 'openapi-validator-middleware';
-import { HttpError } from '../requests/errors/errors';
+import { BadRequestError, HttpError } from '../requests/errors/errors';
 
 @injectable()
 export class ErrorHandler {
@@ -31,6 +31,11 @@ export class ErrorHandler {
           message: {
             validationErrors: err.errors,
           },
+        });
+      } else if (err instanceof BadRequestError) {
+        res.status(err.status).json({
+          name: err.name,
+          data: err.data ?? 'no data',
         });
       } else if (err instanceof HttpError) {
         res.status(err.status).json(err.name);
