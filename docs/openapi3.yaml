@@ -28,6 +28,12 @@ paths:
         - Geopackage Execution Status
       summary: Get the status of export jobs
       operationId: getGeopackageExecutionStatus
+      # TODO: add pagination parameters in future
+      # parameters: # TODO: require parameter in future
+      # - in: query
+      #   name: userId
+      #   schema:
+      #     type: string
       responses:
         200:
           description: OK
@@ -57,6 +63,7 @@ components:
       properties:
         url:
           type: string
+          format: uri
           description: URL of tile server that needs to be downloaded
         exportType:
           type: string
@@ -81,11 +88,11 @@ components:
         fileName:
           type: string
           description: the file name to be created on shared folder
-          pattern: '^[a-zA-Z0-9_-]+$'          
+          pattern: '^[a-zA-Z0-9_-]+$'
         directoryName:
           type: string
           description: the directory name to be created on shared folder
-          pattern: '^[a-zA-Z0-9_-]+$'          
+          pattern: '^[a-zA-Z0-9_-]+$'
         bbox:
           type: array
           items:
@@ -121,6 +128,7 @@ components:
         properties:
           taskId:
             type: string
+            format: uuid
             description: unique task id
           userId:
             type: string
@@ -128,9 +136,11 @@ components:
           directoryName:
             type: string
             description: the directory where the file is stored
+            pattern: '^[a-zA-Z0-9_-]+$'
           fileName:
             type: string
             description: file name
+            pattern: '^[a-zA-Z0-9_-]+$'
           sizeEst:
             type: number
             description: file's estimated size
@@ -161,12 +171,15 @@ components:
           creationDate:
             type: string
             description: export's creation date
+            format: date-time
           lastUpdateTime:
             type: string
             description: export's update time
+            format: date-time
           expirationTime:
             type: string
             description: export's expiration time
+            format: date-time
           progress:
             type: number
             description: export's progress %

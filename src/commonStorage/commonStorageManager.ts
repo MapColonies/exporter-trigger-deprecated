@@ -15,6 +15,7 @@ import {
 } from '../requests/errors/status';
 import statusToResponse from '../util/statusToResponse';
 import { ExportDataDuplicationError } from '../requests/errors/export';
+import { BadRequestError } from '../requests/errors/errors';
 
 @injectable()
 export class CommonStorageManager {
@@ -42,6 +43,11 @@ export class CommonStorageManager {
       );
       return status;
     } catch (error) {
+      const err: AxiosError = error as AxiosError;
+      const errorData: unknown = err.response?.data as unknown;
+      if (err.response?.status == StatusCodes.BAD_REQUEST) {
+        throw new BadRequestError(error, errorData);
+      }
       throw new GetStatusError(error);
     }
   }
@@ -56,6 +62,10 @@ export class CommonStorageManager {
       );
     } catch (error) {
       const err: AxiosError = error as AxiosError;
+      const errorData: unknown = err.response?.data as unknown;
+      if (err.response?.status == StatusCodes.BAD_REQUEST) {
+        throw new BadRequestError(error, errorData);
+      }
       if (err.response?.status == StatusCodes.CONFLICT) {
         throw new ExportDataDuplicationError(error, exportData);
       }
