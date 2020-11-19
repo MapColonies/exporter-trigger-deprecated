@@ -4,6 +4,7 @@ import { injectable } from 'tsyringe';
 import { StatusCodes } from 'http-status-codes';
 import { InputValidationError } from 'openapi-validator-middleware';
 import { BadRequestError, HttpError } from '../requests/errors/errors';
+import { ExportDataDuplicationError } from '../requests/errors/export';
 
 @injectable()
 export class ErrorHandler {
@@ -24,7 +25,6 @@ export class ErrorHandler {
           err.message
         }'`
       );
-
       if (err instanceof InputValidationError) {
         res.status(StatusCodes.BAD_REQUEST).json({
           statusCode: StatusCodes.BAD_REQUEST,
@@ -37,8 +37,10 @@ export class ErrorHandler {
           name: err.name,
           data: err.data ?? 'no data',
         });
-      } else if (err instanceof HttpError) {
-        res.status(err.status).json(err.name);
+      } else if (err instanceof HttpError ||
+        err instanceof ExportDataDuplicationError
+      ) {
+        res.status(err.status).json({ name: err.name });
       } else {
         res
           .status(StatusCodes.INTERNAL_SERVER_ERROR)
