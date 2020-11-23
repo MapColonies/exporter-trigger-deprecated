@@ -37,9 +37,7 @@ export class ErrorHandler {
           name: err.name,
           data: err.data ?? 'no data',
         });
-      } else if (err instanceof HttpError ||
-        err instanceof ExportDataDuplicationError
-      ) {
+      } else if (err instanceof HttpError) {
         res.status(err.status).json({ name: err.name });
       } else {
         res
