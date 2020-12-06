@@ -8,7 +8,8 @@ export default function (taskId: string, request: IInboundRequest): string {
       fileName: request.fileName,
       url: request.exportedLayers[0].url,
       bbox: request.bbox,
-      directoryName: request.directoryName
+      directoryName: request.directoryName,
+      maxZoom: request.maxZoom,
     };
 
     return JSON.stringify(parsedMessage);

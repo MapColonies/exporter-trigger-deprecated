@@ -10,6 +10,7 @@ export default function (statusData: IExportStatusData): IExportStatusDisplay {
     fileName: statusData.fileName,
     sizeEst: statusData.estimatedFileSize,
     realSize: statusData.realFileSize,
+    maxZoom: statusData.maxZoom,
     polygon: polygon,
     status: statusData.status,
     link: statusData.fileURI,
