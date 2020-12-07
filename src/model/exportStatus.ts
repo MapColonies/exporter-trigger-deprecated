@@ -8,6 +8,7 @@ export interface IExportStatusData {
   fileURI: string;
   estimatedFileSize: number;
   realFileSize: number;
+  maxZoom: number;
   geometry: Polygon;
   status: string;
   creationTime: Date;
@@ -23,6 +24,7 @@ export interface IExportStatusDisplay {
   fileName: string;
   sizeEst: number;
   realSize: number;
+  maxZoom: number;
   polygon: Polygon;
   status: string;
   link: string;

@@ -27,7 +27,7 @@ export class KafkaManager {
       clientId: this.kafkaConfig.clientId,
       brokers: this.kafkaConfig.brokers,
     });
-     this.producer = kafka.producer({
+    this.producer = kafka.producer({
       createPartitioner: Partitioners.DefaultPartitioner,
     });
   }

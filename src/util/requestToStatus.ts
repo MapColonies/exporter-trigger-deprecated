@@ -17,6 +17,7 @@ export default function (exportData: IExportData): IExportStatusData {
     fileName: exportData.fileName,
     estimatedFileSize: exportData.sizeEst,
     realFileSize: 0,
+    maxZoom: exportData.maxZoom,
     geometry: exportData.polygon,
     status: 'Pending',
     creationTime: currentDate,
