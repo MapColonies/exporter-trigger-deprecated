@@ -1,3 +1,4 @@
+/* eslint-disable */
 const zoomToResolution: number[] = [
   0.703125, // 0
   0.3515625, // 1
@@ -23,11 +24,12 @@ const zoomToResolution: number[] = [
   3.35276126861572e-7, // 21
   1.67638063430786e-7, // 22
 ];
+/* eslint-enable */
 
 export default function isBBoxResolutionValid(
   zoomLevel: number,
   bbox: number[]
-) {
+): boolean {
   const resolution = zoomToResolution[zoomLevel];
   const topRightLat = bbox[3];
   const topRightLon = bbox[2];
