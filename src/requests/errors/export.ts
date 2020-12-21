@@ -69,7 +69,7 @@ export class BboxResolutionValidationError extends BboxValidationError {
     super(
       {
         name: 'ERR_BBOX_RESOLUTION_VALIDATION_ERROR',
-        message: 'BBox resolution is too small for wanted zoom level',
+        message: `BBox resolution is too small for wanted zoom level, zoom level: ${zoomLevel}`,
       },
       bbox
     );

@@ -1,18 +1,18 @@
 import isBBoxResolutionValid from '../../util/isBBoxResolutionValid';
 
 // Zoom level 15
-const valid_export = {
+const validExport = {
   zoomLevel: 15,
   bbox: [-122.456598, 37.735764, -122.455048, 37.737011],
 };
 
-const valid_negative_values = {
+const validNegativeValues = {
   zoomLevel: 15,
   bbox: [-122.456598, -37.737011, -122.455048, -37.735764],
 };
 
 // Zoom level 4
-const invalid_export = {
+const invalidExport = {
   zoomLevel: 4,
   bbox: [
     35.34901384644131,
@@ -25,22 +25,22 @@ const invalid_export = {
 describe('BBox resolution test', () => {
   it('is valid export', () => {
     expect(
-      isBBoxResolutionValid(valid_export.zoomLevel, valid_export.bbox)
+      isBBoxResolutionValid(validExport.zoomLevel, validExport.bbox)
     ).toBeTruthy();
   });
 
   it('is valid negative export', () => {
     expect(
       isBBoxResolutionValid(
-        valid_negative_values.zoomLevel,
-        valid_negative_values.bbox
+        validNegativeValues.zoomLevel,
+        validNegativeValues.bbox
       )
     ).toBeTruthy();
   });
 
   it('is invalid export', () => {
     expect(
-      isBBoxResolutionValid(invalid_export.zoomLevel, invalid_export.bbox)
+      isBBoxResolutionValid(invalidExport.zoomLevel, invalidExport.bbox)
     ).toBeFalsy();
   });
 });
