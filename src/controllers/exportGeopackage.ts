@@ -36,9 +36,6 @@ export class ExportGeopackageController {
     const taskId = uuidv4();
 
     try {
-      // Get export data from request body
-      const exportData = exportDataString(taskId, requestBody);
-
       // Validate bbox resolution
       if (!isBBoxResolutionValid(requestBody.maxZoom, requestBody.bbox)) {
         throw new BboxResolutionValidationError(
@@ -46,6 +43,9 @@ export class ExportGeopackageController {
           requestBody.maxZoom
         );
       }
+
+      // Get export data from request body
+      const exportData = exportDataString(taskId, requestBody);
 
       // Validate bbox
       validateBboxArea(exportData.polygon, requestBody.bbox);
