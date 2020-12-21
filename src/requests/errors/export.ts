@@ -64,6 +64,21 @@ export class BboxAreaValidationError extends BboxValidationError {
   }
 }
 
+export class BboxResolutionValidationError extends BboxValidationError {
+  public constructor(bbox: number[], zoomLevel: number) {
+    super(
+      {
+        name: 'ERR_BBOX_RESOLUTION_VALIDATION_ERROR',
+        message: 'BBox resolution is too small for wanted zoom level',
+      },
+      bbox
+    );
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, BboxResolutionValidationError.prototype);
+  }
+}
+
 export class ExportDataDuplicationError extends ConflictError {
   public constructor(error: Error, exportData: IExportData) {
     super({
