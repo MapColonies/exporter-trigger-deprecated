@@ -4,7 +4,6 @@ import { injectable } from 'tsyringe';
 import { StatusCodes } from 'http-status-codes';
 import { InputValidationError } from 'openapi-validator-middleware';
 import { BadRequestError, HttpError } from '../requests/errors/errors';
-import { ExportDataDuplicationError } from '../requests/errors/export';
 
 @injectable()
 export class ErrorHandler {

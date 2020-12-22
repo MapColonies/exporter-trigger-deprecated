@@ -10,6 +10,8 @@ import { ICommonStorageConfig } from '../model/commonStorageConfig';
 import outboundRequestString from '../util/outboundRequestToExport';
 import exportDataString from '../util/exportDataString';
 import { validateBboxArea } from '../util/validateBboxArea';
+import isBBoxResolutionValid from '../util/isBBoxResolutionValid';
+import { BboxResolutionValidationError } from '../requests/errors/export';
 
 @injectable()
 export class ExportGeopackageController {
@@ -34,6 +36,14 @@ export class ExportGeopackageController {
     const taskId = uuidv4();
 
     try {
+      // Validate bbox resolution
+      if (!isBBoxResolutionValid(requestBody.maxZoom, requestBody.bbox)) {
+        throw new BboxResolutionValidationError(
+          requestBody.bbox,
+          requestBody.maxZoom
+        );
+      }
+
       // Get export data from request body
       const exportData = exportDataString(taskId, requestBody);
 
