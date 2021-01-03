@@ -111,6 +111,9 @@ components:
         maxZoom:
           type: number
           description: the maximum zoom level of the wanted geopackage
+        sourceName:
+          type: string
+          description: the name of the exported layer
 
       example:
         fileName: test_file
@@ -125,6 +128,7 @@ components:
         exportedLayers:
           - url: http://test/geoserver/ows?service=wms
             exportType: raster
+            sourceLayer: satellite_5m_layer
         sizeEst: 30
         maxZoom: 18
 

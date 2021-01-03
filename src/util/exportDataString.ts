@@ -18,6 +18,7 @@ export default function (
       sizeEst: request.sizeEst,
       maxZoom: request.maxZoom,
       polygon: polygon,
+      exportedLayer: request.exportedLayers[0]
     };
 
     return exportData;
