@@ -33,4 +33,5 @@ export interface IExportStatusDisplay {
   lastUpdateTime: Date;
   expirationTime: Date;
   progress: number;
+  sourceLayer: string;
 }

@@ -18,5 +18,6 @@ export default function (statusData: IExportStatusData): IExportStatusDisplay {
     lastUpdateTime: statusData.updatedTime,
     expirationTime: statusData.expirationTime,
     progress: statusData.progress,
+    sourceLayer: statusData.sourceLayer
   };
 }
