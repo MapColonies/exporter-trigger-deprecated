@@ -12,7 +12,6 @@ COPY . .
 RUN npm run build
 
 FROM node-base as production
-RUN groupadd -r app && useradd -r -g app app
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 ENV SERVER_PORT=8080
@@ -30,7 +29,6 @@ COPY --from=build /usr/src/app/dist .
 
 HEALTHCHECK CMD wget http://127.0.0.1:${SERVER_PORT}/liveness -O /dev/null || exit 1
 
-RUN chown -R app . && mkdir -p /home/app/.config && chown -R app:app /home/app/.config
-USER app:app
+RUN chmod 777 ./confd && mkdir config && chmod 777 ./config
 
 CMD ["./run.sh"]
