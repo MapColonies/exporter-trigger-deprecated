@@ -12,6 +12,7 @@ export interface IInboundRequest {
 export interface ILayerData {
   url: string;
   exportType: string;
+  sourceLayer: string;
 }
 
 export interface IOutboundRequest {
@@ -30,4 +31,5 @@ export interface IExportData {
   sizeEst: number;
   maxZoom: number;
   polygon: Polygon;
+  exportedLayer: ILayerData;
 }

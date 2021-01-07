@@ -24,5 +24,6 @@ export default function (exportData: IExportData): IExportStatusData {
     expirationTime: expirationTime,
     updatedTime: currentDate,
     progress: 0,
+    sourceLayer: exportData.exportedLayer.sourceLayer
   };
 }
