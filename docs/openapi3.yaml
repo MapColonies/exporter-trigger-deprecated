@@ -59,6 +59,7 @@ components:
       required:
         - url
         - exportType
+        - sourceLayer
       type: object
       properties:
         url:
@@ -72,9 +73,14 @@ components:
             Export Type:
              * `raster` - Geopackage of raster tiles
              * `vector` - Geopackage of vector features
+        sourceLayer:
+          type: string
+          description: Source layer name from which the exported file
+          
       example:
         url: http://test/geoserver/ows?service=wms
         exportType: raster
+        sourceLayer: satellite_5m_layer
 
     exportProcess:
       required:
@@ -111,9 +117,6 @@ components:
         maxZoom:
           type: number
           description: the maximum zoom level of the wanted geopackage
-        sourceName:
-          type: string
-          description: the name of the exported layer
 
       example:
         fileName: test_file
@@ -197,6 +200,9 @@ components:
           progress:
             type: number
             description: export's progress %
+          sourceLayer:
+            type: string
+            description: Source layer name from which the exported file
 
         example:
           taskId: acb2dd1f-c7cc-4600-bf31-fb42ff387ee2
@@ -222,3 +228,4 @@ components:
           lastUpdateTime: 2020-11-10T12:09:22.000Z
           expirationTime: 2020-12-10T12:09:01.000Z
           progress: 100
+          sourceLayer: satellite_5m_layer
