@@ -131,7 +131,6 @@ components:
         exportedLayers:
           - url: http://test/geoserver/ows?service=wms
             exportType: raster
-            sourceLayer: satellite_5m_layer
         sizeEst: 30
         maxZoom: 18
 
