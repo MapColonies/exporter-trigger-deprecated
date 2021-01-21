@@ -48,7 +48,6 @@ export class ExportGeopackageController {
       }
 
       //Check if requested layer is exists
-      // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
       if(!requestBody.exportedLayers[0].sourceLayer) {
         requestBody.exportedLayers[0].sourceLayer = this.exportConfig.defaultLayer;
         requestBody.exportedLayers[0].url = this.exportConfig.defaultUrl;
