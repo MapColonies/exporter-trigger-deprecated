@@ -12,7 +12,7 @@ export interface IInboundRequest {
 export interface ILayerData {
   url: string;
   exportType: string;
-  sourceLayer?: string;
+  sourceLayer: string;
 }
 
 export interface IOutboundRequest {
