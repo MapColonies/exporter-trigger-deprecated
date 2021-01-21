@@ -7,6 +7,7 @@ import { KafkaManager } from '../kafka/manager';
 import { CommonStorageManager } from '../commonStorage/commonStorageManager';
 import { IInboundRequest } from '../model/exportRequest';
 import { ICommonStorageConfig } from '../model/commonStorageConfig';
+import { IExportConfig } from '../model/exportConfig';
 import outboundRequestString from '../util/outboundRequestToExport';
 import exportDataString from '../util/exportDataString';
 import { validateBboxArea } from '../util/validateBboxArea';
@@ -16,6 +17,7 @@ import { BboxResolutionValidationError } from '../requests/errors/export';
 @injectable()
 export class ExportGeopackageController {
   protected commonStorageConfig: ICommonStorageConfig;
+  protected exportconfig: IExportConfig;
 
   public constructor(
     @inject(delay(() => KafkaManager))
@@ -24,6 +26,7 @@ export class ExportGeopackageController {
     private readonly commonStorageManager: CommonStorageManager
   ) {
     this.commonStorageConfig = get('commonStorage');
+    this.exportconfig = get('export');
   }
 
   public async exportRequestHandler(
@@ -35,13 +38,20 @@ export class ExportGeopackageController {
     // Generate unique task id
     const taskId = uuidv4();
 
-    try {
+    try { 
       // Validate bbox resolution
       if (!isBBoxResolutionValid(requestBody.maxZoom, requestBody.bbox)) {
         throw new BboxResolutionValidationError(
           requestBody.bbox,
           requestBody.maxZoom
         );
+      }
+
+      //Check if requested layer is exists
+      // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+      if(!requestBody.exportedLayers[0].sourceLayer) {
+        requestBody.exportedLayers[0].sourceLayer = this.exportconfig.defaultLayer;
+        requestBody.exportedLayers[0].url = this.exportconfig.defaultUrl;
       }
 
       // Get export data from request body
@@ -52,6 +62,9 @@ export class ExportGeopackageController {
 
       // Save export to storage
       await this.commonStorageManager.saveExportData(exportData);
+       
+      // Check if layer is exists
+
 
       // Send message to kafka
       const messageToSend = outboundRequestString(taskId, requestBody);

@@ -18,5 +18,9 @@
   },
   "bbox": {
     "limit": "{{ getv "/configuration/bbox/area/square/km/limit" "10000" }}"
+  },
+  "export": {
+    "defaultUrl": "{{ getv "/configuration/export/default/url" "http://10.28.11.95:8080/service?REQUEST=GetMap&SERVICE=WMS&LAYERS=combined_layers" }}",
+    "defaultLayer": "{{ getv "/configuration/export/default/layer" "combined_layers" }}"
   }
 }
