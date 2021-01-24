@@ -7,17 +7,15 @@ import { KafkaManager } from '../kafka/manager';
 import { CommonStorageManager } from '../commonStorage/commonStorageManager';
 import { IInboundRequest } from '../model/exportRequest';
 import { ICommonStorageConfig } from '../model/commonStorageConfig';
-import { IExportConfig } from '../model/exportConfig';
 import outboundRequestString from '../util/outboundRequestToExport';
 import exportDataString from '../util/exportDataString';
 import { validateBboxArea } from '../util/validateBboxArea';
-import isBBoxResolutionValid from '../util/isBBoxResolutionValid';
+import { isBBoxResolutionValid } from '../util/isBBoxResolutionValid';
 import { BboxResolutionValidationError } from '../requests/errors/export';
 
 @injectable()
 export class ExportGeopackageController {
   protected commonStorageConfig: ICommonStorageConfig;
-  protected exportConfig: IExportConfig;
 
   public constructor(
     @inject(delay(() => KafkaManager))
@@ -26,7 +24,6 @@ export class ExportGeopackageController {
     private readonly commonStorageManager: CommonStorageManager
   ) {
     this.commonStorageConfig = get('commonStorage');
-    this.exportConfig = get('export');
   }
 
   public async exportRequestHandler(
@@ -46,16 +43,10 @@ export class ExportGeopackageController {
           requestBody.maxZoom
         );
       }
-
-      //Check if requested layer is exists
-      if(!requestBody.exportedLayers[0].sourceLayer) {
-        requestBody.exportedLayers[0].sourceLayer = this.exportConfig.defaultLayer;
-        requestBody.exportedLayers[0].url = this.exportConfig.defaultUrl;
-      }
       
       // Get export data from request body
       const exportData = exportDataString(taskId, requestBody);
-
+      
       // Validate bbox
       validateBboxArea(exportData.polygon, requestBody.bbox);
 

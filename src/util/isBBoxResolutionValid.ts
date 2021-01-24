@@ -26,7 +26,7 @@ const zoomToResolution: number[] = [
 ];
 /* eslint-enable */
 
-export default function isBBoxResolutionValid(
+export function isBBoxResolutionValid(
   zoomLevel: number,
   bbox: number[]
 ): boolean {
