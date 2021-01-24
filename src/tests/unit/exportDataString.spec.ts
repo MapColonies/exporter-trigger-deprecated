@@ -25,7 +25,9 @@ describe('Export Geopackage', () => {
     expect(Object.keys(exportData)).toContain('exportedLayer');
     expect(Object.keys(exportData.exportedLayer)).toContain('url');
     expect(Object.keys(exportData.exportedLayer)).toContain('sourceLayer');
+    expect(Object.keys(exportData.exportedLayer)).toContain('exportType');
     expect(exportData.exportedLayer.url).toBe(exportConfig.defaultUrl);
     expect(exportData.exportedLayer.sourceLayer).toBe(exportConfig.defaultLayer);
+    expect(exportData.exportedLayer.exportType).toBe(exportConfig.defaultType);
   })
 });
