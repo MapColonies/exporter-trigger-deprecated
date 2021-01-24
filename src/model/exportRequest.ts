@@ -10,16 +10,16 @@ export interface IInboundRequest {
 }
 
 export interface ILayerData {
-  url?: string;
+  url: string;
   exportType: string;
-  sourceLayer?: string;
+  sourceLayer: string;
 }
 
 export interface IOutboundRequest {
   taskId: string;
   directoryName: string;
   fileName: string;
-  url: string | undefined;
+  url: string;
   bbox: number[];
   maxZoom: number;
 }

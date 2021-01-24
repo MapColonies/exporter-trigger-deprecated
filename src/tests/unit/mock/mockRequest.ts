@@ -1,6 +1,6 @@
 import { IInboundRequest } from "../../../model/exportRequest";
 /* eslint-disable */
-export const mockRequest: IInboundRequest = {
+export const mockRequest = {
     fileName: 'test_file',
     directoryName: 'test_directory',
     bbox: [
@@ -8,12 +8,6 @@ export const mockRequest: IInboundRequest = {
       31.95475033759175,
       34.82237261707599,
       31.96426962177354
-    ],
-    exportedLayers: [
-      {
-        url: 'http://test/geoserver/ows?service=wms',
-        exportType: 'raster'
-      }
     ],
     sizeEst: 30,
     maxZoom: 18
