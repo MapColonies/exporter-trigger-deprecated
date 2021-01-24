@@ -11,6 +11,7 @@ export default function (
 ): IExportData {
   try {
     const exportConfig: IExportConfig = get('export');
+    
     // Check if requested layer is exists
     /* eslint-disable */
     if(!(request.exportedLayers && request.exportedLayers[0] && request.exportedLayers[0].sourceLayer)) {

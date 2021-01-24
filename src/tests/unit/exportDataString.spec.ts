@@ -1,24 +1,43 @@
 import 'reflect-metadata';
 import { v4 as uuidv4 } from 'uuid';
-import { get } from 'config';
 import exportDataString from '../../util/exportDataString';
-import * as bboxAreaValidate from '../../util/validateBboxArea';
+import * as bbox from '../../util/validateBboxArea';
 import { IExportData } from '../../model/exportRequest';
 import { IExportConfig } from '../../model/exportConfig';
+/* eslint-disable */
+import { get } from '../../../__mock__/config';
 import { mockRequest } from './mock/mockRequest';
 import { mockPolygon } from './mock/mockPoligon';
 
 describe('Export Geopackage', () => {
+  let getPolygon: jest.SpyInstance;
   let exportConfig: IExportConfig;
-  let getPoligonSpy: jest.SpyInstance;
   beforeEach(()=>{
+    getPolygon = jest.spyOn(bbox, 'getPolygon');
+    get.mockImplementation((key: string)=>{
+      switch (key) {
+        case 'bbox':
+          return {limit: '10000'}
+        case 'export':
+          exportConfig = {
+            defaultUrl: "http://mock-url/",
+            defaultLayer: "mock-layer",
+            defaultType: "raster"
+          }
+          return exportConfig;
+        default:
+          break;
+      }
+    })
     exportConfig = get('export');
+  })
+  afterEach(()=>{
+    jest.resetAllMocks();
   })
   it('Should call export with deafult url and layer', () => {
     // mock
-    getPoligonSpy = jest.spyOn(bboxAreaValidate, 'getPolygon');
+    getPolygon.mockReturnValueOnce(mockPolygon);
     const mockTaskId: string = uuidv4();
-    getPoligonSpy.mockReturnValueOnce(mockPolygon);
     // action
     const exportData: IExportData = exportDataString(mockTaskId, mockRequest);
     // expect
