@@ -1,9 +1,9 @@
 import 'reflect-metadata';
-import exportDataString from '../../util/exportDataString';
 import { v4 as uuidv4 } from 'uuid';
+import { get } from 'config';
+import exportDataString from '../../util/exportDataString';
 import { IExportData, IInboundRequest } from '../../model/exportRequest';
 import { IExportConfig } from '../../model/exportConfig';
-import { get } from 'config';
 
 describe('Export Geopackage', () => {
   let exportConfig: IExportConfig;

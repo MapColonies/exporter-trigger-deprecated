@@ -13,5 +13,6 @@ keys = [
     "/configuration/storage/export/expiration/days",
     "/configuration/bbox/area/square/km/limit",
     "/configuration/export/default/url",
-    "/configuration/export/default/url"
+    "/configuration/export/default/layer",
+    "/configuration/default/type"
 ]

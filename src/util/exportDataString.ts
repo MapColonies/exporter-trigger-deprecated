@@ -1,9 +1,9 @@
 import { Polygon } from '@turf/helpers';
-import { IExportData, IInboundRequest } from '../model/exportRequest';
-import { BadRequestError } from '../requests/errors/errors';
-import { getPolygon } from './validateBboxArea';
 import { get } from 'config';
+import { IExportData, IInboundRequest, ILayerData } from '../model/exportRequest';
+import { BadRequestError } from '../requests/errors/errors';
 import { IExportConfig } from '../model/exportConfig';
+import { getPolygon } from './validateBboxArea';
 
 export default function (
   taskId: string,
@@ -11,11 +11,17 @@ export default function (
 ): IExportData {
   try {
     const exportConfig: IExportConfig = get('export');
-    
     // Check if requested layer is exists
-    if(!request.exportedLayers[0].sourceLayer) {
-      request.exportedLayers[0].sourceLayer = exportConfig.defaultLayer;
-      request.exportedLayers[0].url = exportConfig.defaultUrl;
+    /* eslint-disable */
+    if(!(request.exportedLayers && request.exportedLayers[0] && request.exportedLayers[0].sourceLayer)) {
+      const exportLayer: ILayerData = {
+        url: exportConfig.defaultUrl,
+        sourceLayer: exportConfig.defaultLayer,
+        exportType: exportConfig.defaultType
+      }
+
+      request.exportedLayers = [] as ILayerData[];
+      request.exportedLayers.push(exportLayer);
     }
 
     const bbox = request.bbox;

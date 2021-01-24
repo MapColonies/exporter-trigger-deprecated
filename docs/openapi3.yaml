@@ -59,6 +59,7 @@ components:
       required:
         - url
         - exportType
+        - sourceLayer
       type: object
       properties:
         url:
@@ -86,7 +87,6 @@ components:
         - bbox
         - fileName
         - directoryName
-        - exportedLayers
         - sizeEst
         - maxZoom
       type: object
