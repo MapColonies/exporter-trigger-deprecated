@@ -1,6 +1,6 @@
 import { IInboundRequest } from "../../../model/exportRequest";
 /* eslint-disable */
-export const mockRequest = {
+export const mockRequest: IInboundRequest = {
     fileName: 'test_file',
     directoryName: 'test_directory',
     bbox: [

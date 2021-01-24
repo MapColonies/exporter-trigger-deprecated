@@ -6,7 +6,7 @@ export interface IInboundRequest {
   sizeEst: number;
   maxZoom: number;
   bbox: number[];
-  exportedLayers: ILayerData[];
+  exportedLayers?: ILayerData[];
 }
 
 export interface ILayerData {
