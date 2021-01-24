@@ -46,7 +46,6 @@ export class ExportGeopackageController {
       
       // Get export data from request body
       const exportData = exportDataString(taskId, requestBody);
-      console.log(exportData);
       
       // Validate bbox
       validateBboxArea(exportData.polygon, requestBody.bbox);
