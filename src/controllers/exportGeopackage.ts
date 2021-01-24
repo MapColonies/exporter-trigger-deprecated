@@ -46,7 +46,7 @@ export class ExportGeopackageController {
       
       // Get export data from request body
       const exportData = exportDataString(taskId, requestBody);
-      console.log(exportData);
+
       // Validate bbox
       validateBboxArea(exportData.polygon, requestBody.bbox);
 
@@ -55,7 +55,6 @@ export class ExportGeopackageController {
 
       // Send message to kafka
       const messageToSend = outboundRequestString(taskId, requestBody);
-      console.log(messageToSend);
 
       try {
         await this.kafkaManager.sendMessage(messageToSend);
