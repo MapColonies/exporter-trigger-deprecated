@@ -12,6 +12,7 @@ import exportDataString from '../util/exportDataString';
 import { validateBboxArea } from '../util/validateBboxArea';
 import { isBBoxResolutionValid } from '../util/isBBoxResolutionValid';
 import { BboxResolutionValidationError } from '../requests/errors/export';
+import { MCLogger } from '@map-colonies/mc-logger';
 
 @injectable()
 export class ExportGeopackageController {
@@ -21,7 +22,9 @@ export class ExportGeopackageController {
     @inject(delay(() => KafkaManager))
     private readonly kafkaManager: KafkaManager,
     @inject(delay(() => CommonStorageManager))
-    private readonly commonStorageManager: CommonStorageManager
+    private readonly commonStorageManager: CommonStorageManager,
+    @inject(delay(() => MCLogger))
+    private readonly logger: MCLogger
   ) {
     this.commonStorageConfig = get('commonStorage');
   }
@@ -45,7 +48,7 @@ export class ExportGeopackageController {
       }
       
       // Get export data from request body
-      const exportData = exportDataString(taskId, requestBody);
+      const exportData = exportDataString(taskId, requestBody, this.logger);
 
       // Validate bbox
       validateBboxArea(exportData.polygon, requestBody.bbox);

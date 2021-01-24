@@ -4,10 +4,12 @@ import { IExportData, IInboundRequest, ILayerData } from '../model/exportRequest
 import { BadRequestError } from '../requests/errors/errors';
 import { IExportConfig } from '../model/exportConfig';
 import { getPolygon } from './validateBboxArea';
+import { MCLogger } from '@map-colonies/mc-logger';
 
 export default function (
   taskId: string,
-  request: IInboundRequest
+  request: IInboundRequest,
+  logger: MCLogger
 ): IExportData {
   try {
     const exportConfig: IExportConfig = get('export');
@@ -15,6 +17,7 @@ export default function (
     // Check if requested layer is exists
     /* eslint-disable */
     if(!(request.exportedLayers && request.exportedLayers[0] && request.exportedLayers[0].sourceLayer)) {
+      logger.info('info', `No specific export layer defined - using default layer: ${exportConfig.defaultLayer}`);
       const exportLayer: ILayerData = {
         url: exportConfig.defaultUrl,
         sourceLayer: exportConfig.defaultLayer,
