@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { v4 as uuidv4 } from 'uuid';
+import { ILoggerConfig, IServiceConfig, MCLogger } from '@map-colonies/mc-logger';
 import exportDataString from '../../util/exportDataString';
 import * as bbox from '../../util/validateBboxArea';
 import { IExportData } from '../../model/exportRequest';
@@ -12,6 +13,8 @@ import { mockPolygon } from './mock/mockPoligon';
 describe('Export Geopackage', () => {
   let getPolygon: jest.SpyInstance;
   let exportConfig: IExportConfig;
+  let loggerConfig: ILoggerConfig;
+  let serviceConfig: IServiceConfig;
   beforeEach(()=>{
     getPolygon = jest.spyOn(bbox, 'getPolygon');
     get.mockImplementation((key: string)=>{
@@ -25,11 +28,17 @@ describe('Export Geopackage', () => {
             defaultType: "raster"
           }
           return exportConfig;
+        case 'logger':
+          return {level: 'error'}
+        case 'service':
+          return {name: 'testService', version: '0.1'}
         default:
           break;
       }
     })
     exportConfig = get('export');
+    loggerConfig = get('logger');
+    serviceConfig = get('service');
   })
   afterEach(()=>{
     jest.resetAllMocks();
@@ -39,7 +48,7 @@ describe('Export Geopackage', () => {
     getPolygon.mockReturnValueOnce(mockPolygon);
     const mockTaskId: string = uuidv4();
     // action
-    const exportData: IExportData = exportDataString(mockTaskId, mockRequest);
+    const exportData: IExportData = exportDataString(mockTaskId, mockRequest, new MCLogger(loggerConfig, serviceConfig));
     // expect
     expect(Object.keys(exportData)).toContain('exportedLayer');
     expect(Object.keys(exportData.exportedLayer)).toContain('url');

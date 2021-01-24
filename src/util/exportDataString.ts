@@ -1,10 +1,10 @@
 import { Polygon } from '@turf/helpers';
 import { get } from 'config';
+import { MCLogger } from '@map-colonies/mc-logger';
 import { IExportData, IInboundRequest, ILayerData } from '../model/exportRequest';
 import { BadRequestError } from '../requests/errors/errors';
 import { IExportConfig } from '../model/exportConfig';
 import { getPolygon } from './validateBboxArea';
-import { MCLogger } from '@map-colonies/mc-logger';
 
 export default function (
   taskId: string,

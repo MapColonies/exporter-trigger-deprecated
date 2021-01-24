@@ -3,6 +3,7 @@ import httpStatus from 'http-status-codes';
 import { delay, inject, injectable } from 'tsyringe';
 import { v4 as uuidv4 } from 'uuid';
 import { get } from 'config';
+import { MCLogger } from '@map-colonies/mc-logger';
 import { KafkaManager } from '../kafka/manager';
 import { CommonStorageManager } from '../commonStorage/commonStorageManager';
 import { IInboundRequest } from '../model/exportRequest';
@@ -12,7 +13,6 @@ import exportDataString from '../util/exportDataString';
 import { validateBboxArea } from '../util/validateBboxArea';
 import { isBBoxResolutionValid } from '../util/isBBoxResolutionValid';
 import { BboxResolutionValidationError } from '../requests/errors/export';
-import { MCLogger } from '@map-colonies/mc-logger';
 
 @injectable()
 export class ExportGeopackageController {

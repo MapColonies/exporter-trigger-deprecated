@@ -6,5 +6,8 @@
         "defaultUrl": "http://mock-url/",
         "defaultLayer": "mock-layer",
         "defaultType": "raster"
-    }
+    },
+    "logger": {
+        "level": "error"
+      }
 }
