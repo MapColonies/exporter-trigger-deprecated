@@ -2,35 +2,23 @@ import 'reflect-metadata';
 import { v4 as uuidv4 } from 'uuid';
 import { get } from 'config';
 import exportDataString from '../../util/exportDataString';
-import { IExportData, IInboundRequest } from '../../model/exportRequest';
+import * as bboxAreaValidate from '../../util/validateBboxArea';
+import { IExportData } from '../../model/exportRequest';
 import { IExportConfig } from '../../model/exportConfig';
+import { mockRequest } from './mock/mockRequest';
+import { mockPolygon } from './mock/mockPoligon';
 
 describe('Export Geopackage', () => {
   let exportConfig: IExportConfig;
+  let getPoligonSpy: jest.SpyInstance;
   beforeEach(()=>{
     exportConfig = get('export');
   })
   it('Should call export with deafult url and layer', () => {
     // mock
+    getPoligonSpy = jest.spyOn(bboxAreaValidate, 'getPolygon');
     const mockTaskId: string = uuidv4();
-    const mockRequest: IInboundRequest = {
-      fileName: 'test_file',
-      directoryName: 'test_directory',
-      bbox: [
-        34.811938017107494,
-        31.95475033759175,
-        34.82237261707599,
-        31.96426962177354
-      ],
-      exportedLayers: [
-        {
-          url: 'http://test/geoserver/ows?service=wms',
-          exportType: 'raster'
-        }
-      ],
-      sizeEst: 30,
-      maxZoom: 18
-    }
+    getPoligonSpy.mockReturnValueOnce(mockPolygon);
     // action
     const exportData: IExportData = exportDataString(mockTaskId, mockRequest);
     // expect
