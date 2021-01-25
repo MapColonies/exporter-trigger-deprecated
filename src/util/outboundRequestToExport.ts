@@ -1,4 +1,3 @@
-import { parse } from 'yamljs';
 import { IInboundRequest, ILayerData, IOutboundRequest } from '../model/exportRequest';
 import { BadRequestError } from '../requests/errors/errors';
 
