@@ -1,3 +1,5 @@
+import { readFileSync } from 'fs';
+import { ConnectionOptions } from 'tls';
 import { injectable } from 'tsyringe';
 import { MCLogger } from '@map-colonies/mc-logger';
 
@@ -9,8 +11,6 @@ import {
   KafkaDisconnectError,
   KafkaSendError,
 } from '../requests/errors/kafka';
-import { readFileSync } from 'fs';
-import { ConnectionOptions } from 'tls';
 
 @injectable()
 export class KafkaManager {
