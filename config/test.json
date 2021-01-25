@@ -1,0 +1,13 @@
+{
+    "bbox": {
+        "limit": "10000"
+    },
+    "export": {
+        "defaultUrl": "http://mock-url/",
+        "defaultLayer": "mock-layer",
+        "defaultType": "raster"
+    },
+    "logger": {
+        "level": "error"
+      }
+}

@@ -1,4 +1,4 @@
-import isBBoxResolutionValid from '../../util/isBBoxResolutionValid';
+import {isBBoxResolutionValid} from '../../util/isBBoxResolutionValid';
 
 // Zoom level 15
 const validExport = {

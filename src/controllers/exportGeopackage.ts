@@ -3,6 +3,7 @@ import httpStatus from 'http-status-codes';
 import { delay, inject, injectable } from 'tsyringe';
 import { v4 as uuidv4 } from 'uuid';
 import { get } from 'config';
+import { MCLogger } from '@map-colonies/mc-logger';
 import { KafkaManager } from '../kafka/manager';
 import { CommonStorageManager } from '../commonStorage/commonStorageManager';
 import { IInboundRequest } from '../model/exportRequest';
@@ -10,7 +11,7 @@ import { ICommonStorageConfig } from '../model/commonStorageConfig';
 import outboundRequestString from '../util/outboundRequestToExport';
 import exportDataString from '../util/exportDataString';
 import { validateBboxArea } from '../util/validateBboxArea';
-import isBBoxResolutionValid from '../util/isBBoxResolutionValid';
+import { isBBoxResolutionValid } from '../util/isBBoxResolutionValid';
 import { BboxResolutionValidationError } from '../requests/errors/export';
 
 @injectable()
@@ -21,7 +22,9 @@ export class ExportGeopackageController {
     @inject(delay(() => KafkaManager))
     private readonly kafkaManager: KafkaManager,
     @inject(delay(() => CommonStorageManager))
-    private readonly commonStorageManager: CommonStorageManager
+    private readonly commonStorageManager: CommonStorageManager,
+    @inject(delay(() => MCLogger))
+    private readonly logger: MCLogger
   ) {
     this.commonStorageConfig = get('commonStorage');
   }
@@ -43,9 +46,9 @@ export class ExportGeopackageController {
           requestBody.maxZoom
         );
       }
-
+      
       // Get export data from request body
-      const exportData = exportDataString(taskId, requestBody);
+      const exportData = exportDataString(taskId, requestBody, this.logger);
 
       // Validate bbox
       validateBboxArea(exportData.polygon, requestBody.bbox);

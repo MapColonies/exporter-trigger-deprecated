@@ -87,7 +87,6 @@ components:
         - bbox
         - fileName
         - directoryName
-        - exportedLayers
         - sizeEst
         - maxZoom
       type: object
