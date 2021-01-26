@@ -1,3 +1,5 @@
+import { readFileSync } from 'fs';
+import { ConnectionOptions } from 'tls';
 import { injectable } from 'tsyringe';
 import { MCLogger } from '@map-colonies/mc-logger';
 
@@ -23,10 +25,13 @@ export class KafkaManager {
         this.kafkaConfig.topic
       } brokers=${JSON.stringify(this.kafkaConfig.brokers)}`
     );
+
     const kafka = new Kafka({
       clientId: this.kafkaConfig.clientId,
       brokers: this.kafkaConfig.brokers,
+      ssl: this.parseSSLOptions()
     });
+
     this.producer = kafka.producer({
       createPartitioner: Partitioners.DefaultPartitioner,
     });
@@ -70,5 +75,19 @@ export class KafkaManager {
       const err = error as Error;
       throw new KafkaDisconnectError(err.message, err.stack);
     }
+  }
+
+  private parseSSLOptions() : ConnectionOptions | undefined {
+    if (this.kafkaConfig.ssl.ca 
+      && this.kafkaConfig.ssl.cert 
+      && this.kafkaConfig.ssl.key) {
+      return {
+        rejectUnauthorized: this.kafkaConfig.ssl.rejectUnauthorized,
+        ca: readFileSync(this.kafkaConfig.ssl.ca, 'utf-8'),
+        cert: readFileSync(this.kafkaConfig.ssl.cert, 'utf-8'),
+        key: readFileSync(this.kafkaConfig.ssl.key, 'utf-8'),
+      };
+    }
+    return undefined;
   }
 }

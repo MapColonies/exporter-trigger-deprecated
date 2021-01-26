@@ -10,7 +10,13 @@
   "kafka": {
     "clientId": "{{ getv "/configuration/kafka/client/id" "exporter-trigger" }}",
     "brokers": {{ getv "/configuration/kafka/brokers" "[\"10.28.11.49:9092\"]" }},
-    "topic": "{{ getv "/configuration/kafka/topic" "topic-test-7" }}"
+    "topic": "{{ getv "/configuration/kafka/topic" "topic-test-7" }}",
+    "ssl": {
+      "rejectUnauthorized": {{ getv "/configuration/kafka/ssl/reject/unauthorized" "false" }},
+      "ca": {{ getv "/configuration/kafka/ssl/ca" "null" }},
+      "key": {{ getv "/configuration/kafka/ssl/key" "null" }},
+      "cert": {{ getv "/configuration/kafka/ssl/cert" "null" }}
+    }
   },
   "commonStorage": {
     "url": "{{ getv "/configuration/storage/service/url" "http://127.0.0.1:8081" }}",

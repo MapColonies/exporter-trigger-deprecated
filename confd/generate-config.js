@@ -154,7 +154,7 @@ const main = () => {
   const env = envIdx !== -1 ? process.argv[envIdx + 1] : null;
   downloadIfNotExists(confdUrl, confdPath)
     .then(() => createDevConfdConfigFile(env))
-    .then(createTargetDir())
+    .then(() => createTargetDir())
     .then(() => runConfd())
     .catch(err => {
       console.error('Failed to generate the configuration');
