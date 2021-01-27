@@ -18,6 +18,38 @@ paths:
         200:
           description: OK
           content: {}
+        400:
+          description: Failed in export validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/exportGeopackageErrorBody' 
+              examples:
+                err_bbox:
+                  value:
+                    name: 'Error'
+                    message: 'Error validating bbox, Cause: CAUSE, Bbox= BBOX'
+                err_bbox_area_large:
+                  value:
+                    name: 'ERR_BBOX_AREA_TOO_LARGE'
+                    message: 'BBox area exceeds set limit of ${limit} square km'
+                err_bbox_area_small:
+                  value:
+                    name: 'ERR_BBOX_AREA_TOO_SMALL'
+                    message: 'BBox area cannot be smaller than 1 square meter'
+                err_bbox_resolution:
+                  value:
+                    name: 'ERR_BBOX_RESOLUTION_VALIDATION_ERROR'
+                    message: 'BBox resolution is too small for wanted zoom level, zoom level: ${zoomLevel}'
+        409:
+          description: Failed saving duplicated export data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/exportGeopackageErrorBody' 
+              example:
+                name: 'ERR_EXPORT_DATA_DUPLICATION'
+                message: 'Failed saving export data because of duplication of unique fields, data=DATA, error=ERROR'
         500:
           description: Server Error
           content: {}
@@ -55,6 +87,14 @@ components:
           schema:
             $ref: '#/components/schemas/exportProcess'
   schemas:
+    exportGeopackageErrorBody:
+      type: object
+      properties:
+        name:
+          type: string
+        message:
+          type: string
+
     layerOption:
       required:
         - url
