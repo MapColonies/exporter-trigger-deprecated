@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/MapColonies/exporter-trigger/compare/v1.1.0...v1.2.0) (2021-02-02)
+
+
+### Features
+
+* **source-layer-name:** added source layer's name to the storage request ([#115](https://github.com/MapColonies/exporter-trigger/issues/115)) ([e708563](https://github.com/MapColonies/exporter-trigger/commit/e708563ca42aa1a963aba472ca13846db532730f))
+* add ssl support to kafka configuration ([#121](https://github.com/MapColonies/exporter-trigger/issues/121)) ([6ca4762](https://github.com/MapColonies/exporter-trigger/commit/6ca4762eb0dd974b1a0ac443cbea90a47391afaf))
+
+
+### Bug Fixes
+
+* **swagger:** detailed 400 errors ([#122](https://github.com/MapColonies/exporter-trigger/issues/122)) ([6850e93](https://github.com/MapColonies/exporter-trigger/commit/6850e93ae7c639ac2da972a31ecdaf3da38331ae))
+
 ## [1.1.0](https://github.com/MapColonies/exporter-trigger/compare/v1.0.0...v1.1.0) (2021-01-06)
 
 
