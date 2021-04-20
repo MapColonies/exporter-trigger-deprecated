@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs';
-import { ConnectionOptions } from 'tls';
+import { ConnectionOptions, KeyObject } from 'tls';
 import { injectable } from 'tsyringe';
 import { MCLogger } from '@map-colonies/mc-logger';
 
@@ -29,7 +29,7 @@ export class KafkaManager {
     const kafka = new Kafka({
       clientId: this.kafkaConfig.clientId,
       brokers: this.kafkaConfig.brokers,
-      ssl: this.parseSSLOptions()
+      ssl: this.parseSSLOptions(),
     });
 
     this.producer = kafka.producer({
@@ -77,17 +77,26 @@ export class KafkaManager {
     }
   }
 
-  private parseSSLOptions() : ConnectionOptions | undefined {
-    if (this.kafkaConfig.ssl.ca 
-      && this.kafkaConfig.ssl.cert 
-      && this.kafkaConfig.ssl.key) {
-      return {
-        rejectUnauthorized: this.kafkaConfig.ssl.rejectUnauthorized,
-        ca: readFileSync(this.kafkaConfig.ssl.ca, 'utf-8'),
-        cert: readFileSync(this.kafkaConfig.ssl.cert, 'utf-8'),
-        key: readFileSync(this.kafkaConfig.ssl.key, 'utf-8'),
-      };
+  private parseSSLOptions(): ConnectionOptions | undefined {
+    let sslOptions: ConnectionOptions = {};
+
+    if (this.kafkaConfig.ssl.ca) {
+      sslOptions.rejectUnauthorized = this.kafkaConfig.ssl.rejectUnauthorized;
+      sslOptions.ca = [readFileSync(this.kafkaConfig.ssl.ca, 'utf-8')];
     }
-    return undefined;
+
+    if (this.kafkaConfig.ssl.cert) {
+      sslOptions.cert = readFileSync(this.kafkaConfig.ssl.cert, 'utf-8');
+    }
+
+    if (this.kafkaConfig.ssl.key) {
+      const key: KeyObject = {
+        pem: readFileSync(this.kafkaConfig.ssl.key.pem, 'utf-8'),
+        passphrase: this.kafkaConfig.ssl.key.password,
+      };
+      sslOptions.key = [key];
+    }
+
+    return Object.keys(sslOptions).length === 0 ? undefined : sslOptions;
   }
 }
