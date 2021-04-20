@@ -78,7 +78,7 @@ export class KafkaManager {
   }
 
   private parseSSLOptions(): ConnectionOptions | undefined {
-    let sslOptions: ConnectionOptions = {};
+    const sslOptions: ConnectionOptions = {};
 
     if (this.kafkaConfig.ssl.ca) {
       sslOptions.rejectUnauthorized = this.kafkaConfig.ssl.rejectUnauthorized;
@@ -89,7 +89,7 @@ export class KafkaManager {
       sslOptions.cert = readFileSync(this.kafkaConfig.ssl.cert, 'utf-8');
     }
 
-    if (this.kafkaConfig.ssl.key) {
+    if (this.kafkaConfig.ssl.key.pem && this.kafkaConfig.ssl.key.password) {
       const key: KeyObject = {
         pem: readFileSync(this.kafkaConfig.ssl.key.pem, 'utf-8'),
         passphrase: this.kafkaConfig.ssl.key.password,
