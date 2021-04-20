@@ -1,7 +1,12 @@
+interface IKafkaKeyOptions {
+  pem: string;
+  password: string;
+}
+
 export interface IKafkaSSLOptions {
   rejectUnauthorized: boolean;
   ca: string;
-  key: string;
+  key: IKafkaKeyOptions;
   cert: string;
 }
 

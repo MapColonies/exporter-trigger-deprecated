@@ -12,6 +12,7 @@ keys = [
     "/configuration/kafka/ssl/reject/unauthorized",
     "/configuration/kafka/ssl/ca",
     "/configuration/kafka/ssl/key",
+    "/configuration/kafka/ssl/key/password",
     "/configuration/kafka/ssl/cert",
     "/configuration/storage/service/url",
     "/configuration/storage/export/expiration/days",

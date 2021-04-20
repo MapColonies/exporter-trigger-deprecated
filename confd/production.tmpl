@@ -14,7 +14,10 @@
     "ssl": {
       "rejectUnauthorized": {{ getv "/configuration/kafka/ssl/reject/unauthorized" "false" }},
       "ca": {{ getv "/configuration/kafka/ssl/ca" "null" }},
-      "key": {{ getv "/configuration/kafka/ssl/key" "null" }},
+      "key": {
+        "pem": {{ getv "/configuration/kafka/ssl/key" "null" }},
+        "password": {{ getv "/configuration/kafka/ssl/key/password" "null" }}
+      },
       "cert": {{ getv "/configuration/kafka/ssl/cert" "null" }}
     }
   },
