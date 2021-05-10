@@ -13,12 +13,12 @@
     "topic": "{{ getv "/configuration/kafka/topic" "topic-test-7" }}",
     "ssl": {
       "rejectUnauthorized": {{ getv "/configuration/kafka/ssl/reject/unauthorized" "false" }},
-      "ca": "{{ getv "/configuration/kafka/ssl/ca" "null" }}",
+      "ca": {{ if ne (getv "/configuration/kafka/ssl/ca" "") "" }}"{{ getv "/configuration/kafka/ssl/ca" }}"{{ else }}{{ "null" }}{{ end }},
       "key": {
-        "pem": "{{ getv "/configuration/kafka/ssl/key" "null" }}",
-        "password": "{{ getv "/configuration/kafka/ssl/key/password" "null" }}"
+        "pem": {{ if ne (getv "/configuration/kafka/ssl/key" "") "" }}"{{ getv "/configuration/kafka/ssl/key" }}"{{ else }}{{ "null" }}{{ end }},
+        "password": {{ if ne (getv "/configuration/kafka/ssl/key/password" "") "" }}"{{ getv "/configuration/kafka/ssl/key/password" }}"{{ else }}{{ "null" }}{{ end }}
       },
-      "cert": "{{ getv "/configuration/kafka/ssl/cert" "null" }}"
+      "cert": {{ if ne (getv "/configuration/kafka/ssl/cert" "") "" }}"{{ getv "/configuration/kafka/ssl/cert" }}"{{ else }}{{ "null" }}{{ end }}
     }
   },
   "commonStorage": {
