@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.2](https://github.com/MapColonies/exporter-trigger/compare/v1.2.1...v1.2.2) (2021-05-10)
+
+
+### Bug Fixes
+
+* **confd:** add conditional values in confd for cert files ([#134](https://github.com/MapColonies/exporter-trigger/issues/134)) ([ae9cc07](https://github.com/MapColonies/exporter-trigger/commit/ae9cc0798bb5e644aaf881e52ffd21a1adec0f98))
+
 ### [1.2.1](https://github.com/MapColonies/exporter-trigger/compare/v1.2.0...v1.2.1) (2021-05-10)
 
 
