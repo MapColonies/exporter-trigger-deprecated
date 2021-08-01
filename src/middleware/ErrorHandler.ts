@@ -3,6 +3,7 @@ import { Request, Response, NextFunction, ErrorRequestHandler } from 'express';
 import { injectable } from 'tsyringe';
 import { StatusCodes } from 'http-status-codes';
 import { InputValidationError } from 'openapi-validator-middleware';
+import { HttpError as clientError } from '@map-colonies/error-types';
 import { BadRequestError, HttpError } from '../requests/errors/errors';
 
 @injectable()
@@ -24,7 +25,12 @@ export class ErrorHandler {
           err.message
         }'`
       );
-      if (err instanceof InputValidationError) {
+      if (err instanceof clientError) {
+        res.status(err.status).json({
+          statusCode: err.status,
+          message: err.message,
+        });
+      } else if (err instanceof InputValidationError) {
         res.status(StatusCodes.BAD_REQUEST).json({
           statusCode: StatusCodes.BAD_REQUEST,
           message: {

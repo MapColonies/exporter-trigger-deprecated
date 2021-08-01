@@ -1,32 +1,27 @@
 import { NextFunction, Request, Response } from 'express';
 import httpStatus from 'http-status-codes';
 import { delay, inject, injectable } from 'tsyringe';
-import { v4 as uuidv4 } from 'uuid';
-import { get } from 'config';
+import config from 'config';
 import { MCLogger } from '@map-colonies/mc-logger';
-import { KafkaManager } from '../kafka/manager';
-import { CommonStorageManager } from '../commonStorage/commonStorageManager';
 import { IInboundRequest } from '../model/exportRequest';
 import { ICommonStorageConfig } from '../model/commonStorageConfig';
-import outboundRequestString from '../util/outboundRequestToExport';
-import exportDataString from '../util/exportDataString';
-import { validateBboxArea } from '../util/validateBboxArea';
+import { getPolygon, validateBboxArea } from '../util/validateBboxArea';
 import { isBBoxResolutionValid } from '../util/isBBoxResolutionValid';
 import { BboxResolutionValidationError } from '../requests/errors/export';
+import { JobManagerClient } from '../clients/jobManagerClient';
+import { IExportConfig } from '../model/exportConfig';
 
 @injectable()
 export class ExportGeopackageController {
   protected commonStorageConfig: ICommonStorageConfig;
+  protected exportConfig: IExportConfig;
 
   public constructor(
-    @inject(delay(() => KafkaManager))
-    private readonly kafkaManager: KafkaManager,
-    @inject(delay(() => CommonStorageManager))
-    private readonly commonStorageManager: CommonStorageManager,
-    @inject(delay(() => MCLogger))
-    private readonly logger: MCLogger
+    @inject(delay(() => MCLogger)) private readonly logger: MCLogger,
+    private readonly jobManager: JobManagerClient
   ) {
-    this.commonStorageConfig = get('commonStorage');
+    this.commonStorageConfig = config.get('commonStorage');
+    this.exportConfig = config.get<IExportConfig>('export');
   }
 
   public async exportRequestHandler(
@@ -35,8 +30,6 @@ export class ExportGeopackageController {
     next: NextFunction
   ): Promise<Response | void> {
     const requestBody = req.body as IInboundRequest;
-    // Generate unique task id
-    const taskId = uuidv4();
 
     try {
       // Validate bbox resolution
@@ -46,30 +39,33 @@ export class ExportGeopackageController {
           requestBody.maxZoom
         );
       }
-      
-      // Get export data from request body
-      const exportData = exportDataString(taskId, requestBody, this.logger);
 
       // Validate bbox
-      validateBboxArea(exportData.polygon, requestBody.bbox);
+      const polygon = getPolygon(requestBody.bbox);
+      validateBboxArea(polygon, requestBody.bbox);
 
-      // Save export to storage
-      await this.commonStorageManager.saveExportData(exportData);
-
-      // Send message to kafka
-      const messageToSend = outboundRequestString(taskId, requestBody);
-
-      try {
-        await this.kafkaManager.sendMessage(messageToSend);
-      } catch (error) {
-        // Remove failed export from storage
-        await this.commonStorageManager.deleteExportData(taskId);
-        return next(error);
+      //add default layer if no layer is selected
+      if (
+        requestBody.exportedLayers === undefined ||
+        requestBody.exportedLayers.length === 0 ||
+        !!requestBody.exportedLayers[0].sourceLayer
+      ) {
+        this.logger.info(
+          `No specific export layer defined - using default layer: ${this.exportConfig.defaultLayer}`
+        );
+        requestBody.exportedLayers = [];
+        requestBody.exportedLayers.push({
+          url: this.exportConfig.defaultUrl,
+          sourceLayer: this.exportConfig.defaultLayer,
+          exportType: this.exportConfig.defaultType,
+        });
       }
+
+      // enqueue task
+      const jobId = await this.jobManager.createJob(requestBody);
+      return res.status(httpStatus.OK).json(jobId);
     } catch (error) {
       return next(error);
     }
-
-    return res.status(httpStatus.OK).json({ uuid: taskId });
   }
 }
