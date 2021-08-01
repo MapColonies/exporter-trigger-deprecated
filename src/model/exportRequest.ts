@@ -16,7 +16,6 @@ export interface ILayerData {
 }
 
 export interface IOutboundRequest {
-  taskId: string;
   directoryName: string;
   fileName: string;
   url: string;
@@ -25,7 +24,6 @@ export interface IOutboundRequest {
 }
 
 export interface IExportData {
-  taskId: string;
   fileName: string;
   directoryName: string;
   sizeEst: number;

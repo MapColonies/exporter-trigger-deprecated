@@ -7,23 +7,11 @@
   "logger": {
     "level": "{{ getv "/configuration/logger/level" "error" }}"
   },
-  "kafka": {
-    "clientId": "{{ getv "/configuration/kafka/client/id" "exporter-trigger" }}",
-    "brokers": {{ getv "/configuration/kafka/brokers" "[\"10.28.11.49:9092\"]" }},
-    "topic": "{{ getv "/configuration/kafka/topic" "topic-test-7" }}",
-    "ssl": {
-      "rejectUnauthorized": {{ getv "/configuration/kafka/ssl/reject/unauthorized" "false" }},
-      "ca": {{ if ne (getv "/configuration/kafka/ssl/ca" "") "" }}"{{ getv "/configuration/kafka/ssl/ca" }}"{{ else }}{{ "null" }}{{ end }},
-      "key": {
-        "pem": {{ if ne (getv "/configuration/kafka/ssl/key" "") "" }}"{{ getv "/configuration/kafka/ssl/key" }}"{{ else }}{{ "null" }}{{ end }},
-        "password": {{ if ne (getv "/configuration/kafka/ssl/key/password" "") "" }}"{{ getv "/configuration/kafka/ssl/key/password" }}"{{ else }}{{ "null" }}{{ end }}
-      },
-      "cert": {{ if ne (getv "/configuration/kafka/ssl/cert" "") "" }}"{{ getv "/configuration/kafka/ssl/cert" }}"{{ else }}{{ "null" }}{{ end }}
-    }
-  },
   "commonStorage": {
     "url": "{{ getv "/configuration/storage/service/url" "http://127.0.0.1:8081" }}",
-    "expirationTime": {{ getv "/configuration/storage/export/expiration/days" "30" }}
+    "expirationTime": {{ getv "/configuration/storage/export/expiration/days" "30" }},
+    "jobType": "{{ getv "/configuration/storage/job/type" "rasterExporter" }}",
+    "taskType": "{{ getv "/configuration/storage/task/type" "rasterExporter" }}"
   },
   "bbox": {
     "limit": "{{ getv "/configuration/bbox/area/square/km/limit" "10000" }}"
@@ -32,5 +20,10 @@
     "defaultUrl": "{{ getv "/configuration/export/default/url" "http://10.28.11.95:8080/service?REQUEST=GetMap&SERVICE=WMS&LAYERS=combined_layers" }}",
     "defaultLayer": "{{ getv "/configuration/export/default/layer" "combined_layers" }}",
     "defaultType": "{{ getv "/configuration/default/type" "raster" }}"
+  },
+  "httpRetry": {
+    "attempts": {{ getv "/configuration/http/retry/attempts" "5" }},
+    "delay": "{{ getv "/configuration/http/retry/delay" "exponential" }}",
+    "shouldResetTimeout": {{ getv "/configuration/http/retry/should/reset/timeout" "true" }}
   }
 }
