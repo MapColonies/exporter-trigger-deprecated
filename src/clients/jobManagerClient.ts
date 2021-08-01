@@ -130,6 +130,9 @@ export class JobManagerClient extends HttpClient {
       ],
     };
 
+    this.logger.info(
+      `creating job and task for ${data.directoryName}/${data.fileName}`
+    );
     const res = await this.post<ICreateJobResponse>(
       createLayerTasksUrl,
       createJobRequest
