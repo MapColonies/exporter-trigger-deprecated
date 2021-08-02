@@ -25,5 +25,8 @@
     "attempts": {{ getv "/configuration/http/retry/attempts" "5" }},
     "delay": "{{ getv "/configuration/http/retry/delay" "exponential" }}",
     "shouldResetTimeout": {{ getv "/configuration/http/retry/should/reset/timeout" "true" }}
+  },
+  "rasterCatalogManager": {
+    "url": "{{ getv "/configuration/raster/catalog/manager/url" "http://127.0.0.1:8082" }}"
   }
 }

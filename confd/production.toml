@@ -16,5 +16,6 @@ keys = [
     "/configuration/default/type",
     "/configuration/http/retry/attempts",
     "/configuration/http/retry/delay",
-    "/configuration/http/retry/should/reset/timeout"
+    "/configuration/http/retry/should/reset/timeout",
+    "/configuration/raster/catalog/manager/url"
 ]

@@ -5,11 +5,7 @@ import { Request, Response, RequestHandler } from 'express';
 import { load } from 'yamljs';
 import { injectable, delay, inject } from 'tsyringe';
 import { config as initDotEnv } from 'dotenv';
-
-interface SwaggerServer {
-  [key: string]: unknown;
-  url: string;
-}
+import { SwaggerServer } from '../util/interfaces';
 
 @injectable()
 export class SwaggerController {

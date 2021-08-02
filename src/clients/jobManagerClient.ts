@@ -3,84 +3,19 @@ import { injectable, delay, inject } from 'tsyringe';
 import { HttpClient, IHttpRetryConfig } from '@map-colonies/mc-utils';
 import { MCLogger } from '@map-colonies/mc-logger';
 import { v4 as uuid } from 'uuid';
-import { IInboundRequest, IOutboundRequest } from '../model/exportRequest';
+import { IInboundRequest } from '../model/exportRequest';
 import { IExportStatusDisplay } from '../model/exportStatus';
 import { getPolygon } from '../util/validateBboxArea';
-
-export enum OperationStatus {
-  PENDING = 'Pending',
-  IN_PROGRESS = 'In-Progress',
-  COMPLETED = 'Completed',
-  FAILED = 'Failed',
-}
-
-export interface IJobCreationResponse {
-  jobId: string;
-  taskId: string;
-}
-
-interface ICreateTaskBody {
-  description?: string;
-  parameters: Record<string, unknown>;
-  reason?: string;
-  type?: string;
-  status?: OperationStatus;
-  attempts?: number;
-}
-
-interface ICreateJobBody {
-  resourceId: string;
-  version: string;
-  parameters: Record<string, unknown>;
-  type: string;
-  description?: string;
-  status?: OperationStatus;
-  reason?: string;
-  tasks?: ICreateTaskBody[];
-}
-
-interface ICreateJobResponse {
-  id: string;
-  taskIds: string[];
-}
-
-interface IGetTaskResponse {
-  id: string;
-  jobId: string;
-  description?: string;
-  parameters?: Record<string, unknown>;
-  created: Date;
-  updated: Date;
-  status: OperationStatus;
-  percentage?: number;
-  reason?: string;
-  attempts: number;
-}
-
-interface IGetJobResponse {
-  id: string;
-  resourceId?: string;
-  version?: string;
-  description?: string;
-  parameters?: Record<string, unknown>;
-  reason?: string;
-  tasks?: IGetTaskResponse[];
-  created: Date;
-  updated: Date;
-  status?: OperationStatus;
-  percentage?: number;
-  isCleaned: boolean;
-}
-
-interface IJobData extends IInboundRequest {
-  userId: string;
-}
-
-interface ITaskData extends IOutboundRequest {
-  expirationTime: Date;
-  fileURI: string;
-  realFileSize: number;
-}
+import {
+  IJobCreationResponse,
+  ICreateJobBody,
+  ICreateJobResponse,
+  IWorkerInput,
+  IGetJobResponse,
+  IJobData,
+  IGetTaskResponse,
+  ITaskData,
+} from '../util/interfaces';
 
 const jobType = config.get<string>('commonStorage.jobType');
 const taskType = config.get<string>('commonStorage.taskType');
@@ -133,6 +68,50 @@ export class JobManagerClient extends HttpClient {
     this.logger.info(
       `creating job and task for ${data.directoryName}/${data.fileName}`
     );
+    const res = await this.post<ICreateJobResponse>(
+      createLayerTasksUrl,
+      createJobRequest
+    );
+    return {
+      jobId: res.id,
+      taskId: res.taskIds[0],
+    };
+  }
+
+  public async createJobGM(data: IWorkerInput): Promise<IJobCreationResponse> {
+    const resourceId = data.cswLayerId;
+    const version = data.version;
+    const createLayerTasksUrl = `/jobs`;
+    const expirationTime = new Date();
+    expirationTime.setDate(
+      expirationTime.getDate() +
+        config.get<number>('commonStorage.expirationTime')
+    );
+    const createJobRequest: ICreateJobBody = {
+      resourceId: resourceId,
+      version: version,
+      type: jobType,
+      parameters: {
+        ...data,
+        userId: 'tester', // TODO: replace with request value
+      },
+      tasks: [
+        {
+          type: taskType,
+          parameters: {
+            layerId: data.layerId,
+            crs: data.crs,
+            maxZoomLevel: data.maxZoomLevel,
+            url: data.url,
+            bbox: data.bbox,
+            expirationTime: expirationTime,
+            priority: data.priority,
+          },
+        },
+      ],
+    };
+
+    this.logger.info(`creating job and task for ${data.layerId}`);
     const res = await this.post<ICreateJobResponse>(
       createLayerTasksUrl,
       createJobRequest

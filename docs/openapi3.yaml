@@ -54,6 +54,25 @@ paths:
           description: Server Error
           content: {}
       x-codegen-request-body-name: body
+  /getmap:
+    post:
+      tags:
+        - Export tiles to GPKG 
+      summary: Trigger export geopackage process
+      operationId: exportTilesToGpkg
+      requestBody:
+        $ref: '#/components/requestBodies/ExportGetmapBody'
+      responses:
+        200:
+          description: OK
+          content: {}
+        400:
+          description: Bad Request - could not process request
+          content: {}
+        500:
+          description: Server Error
+          content: {}
+
   /exportStatus:
     get:
       tags:
@@ -86,6 +105,15 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/exportProcess'
+    
+    ExportGetmapBody:
+      description: Export to gpkg via GetMap
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/exportGetMap'      
+
   schemas:
     exportGeopackageErrorBody:
       type: object
@@ -122,6 +150,38 @@ components:
         exportType: raster
         sourceLayer: satellite_5m_layer
 
+    exportGetMap:
+      requried:
+        - layerId
+        - bbox
+        - maxZoomLevel
+        - url
+      type: object
+      properties:
+        layerId:
+            type: string
+            format: uuid
+            description: UUID of the wanted layer
+        bbox:
+          type: array
+          items:
+            type: number
+          minItems: 4
+          maxItems: 4
+          description: Bounding box corners (lower left, upper right)=[minx,miny,maxx,maxy] in crs units as array
+        maxZoomLevel:
+          type: number
+          description: The maximum zoom level in which the tiles will be created
+        url:
+          type: string
+          description: The callback URL to notify the process if finished
+        CRS:
+          type: string
+          description: The CRS to be used, defaults to EPSG:4326
+        priority:
+          type: number
+          description: The priority of the record.
+    
     exportProcess:
       required:
         - bbox
