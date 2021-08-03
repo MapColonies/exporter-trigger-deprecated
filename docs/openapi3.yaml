@@ -187,7 +187,7 @@ components:
           description: Bounding box corners (lower left, upper right)=[minx,miny,maxx,maxy] in crs units as array
         targetResolution:
           type: number
-          description: The target resolution in which the tiles will be created - DEGREES FOR PIXEL!
+          description: The target resolution in which the tiles will be created - DEGREE to PIXEL
         url:
           type: string
           description: The callback URL to notify the process if finished

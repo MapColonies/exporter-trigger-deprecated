@@ -53,7 +53,7 @@ export class GMController {
         footprint: layerMetadata.footprint as Polygon | MultiPolygon,
         bbox: input.bbox,
         version: layerMetadata.productVersion as string,
-        cswLayerId: layerMetadata.productId as string,
+        cswProductId: layerMetadata.productId as string,
         targetResolution: input.targetResolution,
         dbId: input.dbId,
         url: input.url,

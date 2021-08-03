@@ -88,7 +88,7 @@ export class JobManagerClient extends HttpClient {
   }
 
   public async createJobGM(data: IWorkerInput): Promise<IJobCreationResponse> {
-    const resourceId = data.cswLayerId + '-' + data.version;
+    const resourceId = data.cswProductId + '-' + data.version;
     const version = data.version;
     const createLayerTasksUrl = `/jobs`;
     const zoomLevel = zoomLevelFromRes(data.targetResolution);

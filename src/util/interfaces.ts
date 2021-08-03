@@ -81,7 +81,7 @@ export interface IWorkerInput extends IUserInput {
   footprint: Polygon | MultiPolygon;
   bbox: BBox2d;
   version: string;
-  cswLayerId: string;
+  cswProductId: string;
   tilesPath: string;
 }
 
