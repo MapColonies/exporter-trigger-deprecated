@@ -51,7 +51,7 @@ export class GMController {
       const layerMetadata = layer.metadata as LayerMetadata;
 
       const workerInput: IWorkerInput = {
-        footprint: layer.footprint as Polygon | MultiPolygon,
+        footprint: layerMetadata.footprint as Polygon | MultiPolygon,
         bbox: input.bbox,
         version: layerMetadata.productVersion as string,
         cswLayerId: layerMetadata.productId as string,
