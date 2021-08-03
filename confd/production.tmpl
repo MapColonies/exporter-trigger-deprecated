@@ -9,9 +9,7 @@
   },
   "commonStorage": {
     "url": "{{ getv "/configuration/storage/service/url" "http://127.0.0.1:8081" }}",
-    "expirationTime": {{ getv "/configuration/storage/export/expiration/days" "30" }},
-    "jobType": "{{ getv "/configuration/storage/job/type" "rasterExporter" }}",
-    "taskType": "{{ getv "/configuration/storage/task/type" "rasterExporter" }}"
+    "expirationTime": {{ getv "/configuration/storage/export/expiration/days" "30" }}
   },
   "bbox": {
     "limit": "{{ getv "/configuration/bbox/area/square/km/limit" "10000" }}"
@@ -28,5 +26,15 @@
   },
   "rasterCatalogManager": {
     "url": "{{ getv "/configuration/raster/catalog/manager/url" "http://127.0.0.1:8082" }}"
+  },
+  "workerTypes": {
+    "gdal": {
+      "jobType": "{{ getv "/configuration/worker/gdal/job/type" "rasterGdalExporter" }}",
+      "taskType": "{{ getv "/configuration/worker/gdal/task/type" "rasterGdalExporter" }}"
+    },
+    "tiles": {
+      "jobType": "{{ getv "/configuration/worker/tiles/job/type" "rasterTilesExporter" }}",
+      "taskType": "{{ getv "/configuration/worker/tiles/task/type" "rasterTilesExporter" }}"
+    }
   }
 }

@@ -16,11 +16,15 @@ import {
   IGetTaskResponse,
   ITaskData,
 } from '../util/interfaces';
+import { zoomLevelFromRes } from '../util/utils';
 
-const jobType = config.get<string>('commonStorage.jobType');
-const taskType = config.get<string>('commonStorage.taskType');
 @injectable()
 export class JobManagerClient extends HttpClient {
+  private readonly gdalJobType: string;
+  private readonly gdalTaskType: string;
+  private readonly tilesJobType: string;
+  private readonly tilesTaskType: string;
+  private readonly expirationTime: number;
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   public constructor(
@@ -29,6 +33,11 @@ export class JobManagerClient extends HttpClient {
     const retryConfig = config.get<IHttpRetryConfig>('httpRetry');
     const baseURL = config.get<string>('commonStorage.url');
     super(logger, baseURL, 'JobManager', retryConfig);
+    this.gdalJobType = config.get<string>('workerTypes.gdal.jobType');
+    this.gdalTaskType = config.get<string>('workerTypes.gdal.taskType');
+    this.tilesJobType = config.get<string>('workerTypes.tiles.jobType');
+    this.tilesTaskType = config.get<string>('workerTypes.tiles.taskType');
+    this.expirationTime = config.get<number>('commonStorage.expirationTime')
   }
 
   public async createJob(data: IInboundRequest): Promise<IJobCreationResponse> {
@@ -38,19 +47,19 @@ export class JobManagerClient extends HttpClient {
     const expirationTime = new Date();
     expirationTime.setDate(
       expirationTime.getDate() +
-        config.get<number>('commonStorage.expirationTime')
+       this.expirationTime
     );
     const createJobRequest: ICreateJobBody = {
       resourceId: resourceId,
       version: version,
-      type: jobType,
+      type: this.gdalJobType,
       parameters: {
         ...data,
         userId: 'tester', // TODO: replace with request value
       },
       tasks: [
         {
-          type: taskType,
+          type: this.gdalTaskType,
           parameters: {
             directoryName: data.directoryName,
             fileName: data.fileName,
@@ -79,29 +88,31 @@ export class JobManagerClient extends HttpClient {
   }
 
   public async createJobGM(data: IWorkerInput): Promise<IJobCreationResponse> {
-    const resourceId = data.cswLayerId;
+    const resourceId = data.cswLayerId + '-' + data.version;
     const version = data.version;
     const createLayerTasksUrl = `/jobs`;
+    const zoomLevel = zoomLevelFromRes(data.targetResolution);
+
     const expirationTime = new Date();
     expirationTime.setDate(
       expirationTime.getDate() +
-        config.get<number>('commonStorage.expirationTime')
+      this.expirationTime
     );
     const createJobRequest: ICreateJobBody = {
       resourceId: resourceId,
       version: version,
-      type: jobType,
+      type: this.tilesJobType,
       parameters: {
         ...data,
         userId: 'tester', // TODO: replace with request value
       },
       tasks: [
         {
-          type: taskType,
+          type: this.tilesTaskType,
           parameters: {
-            layerId: data.layerId,
+            dbId: data.dbId,
             crs: data.crs,
-            maxZoomLevel: data.maxZoomLevel,
+            zoomLevel,
             url: data.url,
             bbox: data.bbox,
             expirationTime: expirationTime,
@@ -113,7 +124,7 @@ export class JobManagerClient extends HttpClient {
       ],
     };
 
-    this.logger.info(`creating job and task for ${data.layerId}`);
+    this.logger.info(`creating job and task for ${data.dbId}`);
     const res = await this.post<ICreateJobResponse>(
       createLayerTasksUrl,
       createJobRequest
@@ -127,7 +138,7 @@ export class JobManagerClient extends HttpClient {
   public async getGeopackageExecutionStatus(): Promise<IExportStatusDisplay[]> {
     const getLayerUrl = `/jobs`;
     const res = await this.get<IGetJobResponse[]>(getLayerUrl, {
-      type: jobType,
+      type: this.gdalJobType,
     });
     if (typeof res === 'string' || res.length === 0) {
       return [];

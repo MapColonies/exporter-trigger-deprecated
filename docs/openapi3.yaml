@@ -67,11 +67,27 @@ paths:
           description: OK
           content: {}
         400:
-          description: Bad Request - could not process request
-          content: {}
+          description: BAD REQUEST - failed in export validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/exportGeopackageErrorBody' 
+              examples:
+                err_bbox:
+                  value:
+                    name: 'Error'
+                    message: 'OpenAPI parameters validation failed'
         500:
-          description: Server Error
-          content: {}
+          description: Internal Server Error due to unavailable services
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/exportGeopackageErrorBody' 
+              examples:
+                err_bbox:
+                  value:
+                    name: 'Error'
+                    message: 'Other service - could not process the request'
 
   /exportStatus:
     get:
@@ -152,16 +168,16 @@ components:
 
     exportGetMap:
       requried:
-        - layerId
+        - dbId
         - bbox
-        - maxZoomLevel
+        - targetResolution
         - url
       type: object
       properties:
-        layerId:
+        dbId:
             type: string
             format: uuid
-            description: UUID of the wanted layer
+            description: ID as the primary key from the Raster Catalog
         bbox:
           type: array
           items:
@@ -169,18 +185,21 @@ components:
           minItems: 4
           maxItems: 4
           description: Bounding box corners (lower left, upper right)=[minx,miny,maxx,maxy] in crs units as array
-        maxZoomLevel:
+        targetResolution:
           type: number
-          description: The maximum zoom level in which the tiles will be created
+          description: The target resolution in which the tiles will be created - DEGREES FOR PIXEL!
         url:
           type: string
           description: The callback URL to notify the process if finished
         CRS:
           type: string
           description: The CRS to be used, defaults to EPSG:4326
+          enum: ['EPSG:4326']
         priority:
           type: number
-          description: The priority of the record.
+          description: The priority of the record. Maximum priority = most urgent.
+          minimum: 0
+          maximum: 1000
     
     exportProcess:
       required:

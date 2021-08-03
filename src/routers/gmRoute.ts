@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { container } from 'tsyringe';
+import { validate } from 'openapi-validator-middleware';
 import { GMController } from '../controllers/gmController';
 
 const gmRoute = Router();
@@ -7,7 +8,7 @@ const controller = container.resolve(GMController);
 
 gmRoute.post(
   '/',
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  validate,
   controller.start.bind(controller)
 );
 

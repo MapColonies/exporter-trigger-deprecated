@@ -91,8 +91,8 @@ export interface SwaggerServer {
   }
 
   export interface IUserInput {
-    layerId: string;
-    maxZoomLevel: number;
+    dbId: string;
+    targetResolution: number;
     crs?: string;
     url: string;
     bbox: BBox2d;
