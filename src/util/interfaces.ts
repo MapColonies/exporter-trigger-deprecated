@@ -82,6 +82,7 @@ export interface IWorkerInput extends IUserInput {
   bbox: BBox2d;
   version: string;
   cswLayerId: string;
+  tilesPath: string;
 }
 
 export interface SwaggerServer {

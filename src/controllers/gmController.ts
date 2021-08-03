@@ -12,12 +12,14 @@ import {
   IRasterCatalogManager,
   IWorkerInput,
 } from '../util/interfaces';
+import { sep } from 'path';
 
 export type RequestBody = Request<undefined, undefined, IUserInput>;
 
 @injectable()
 export class GMController {
   private readonly rasterCatalogManagerConfig: IRasterCatalogManager;
+  private readonly tilesMountPath: string;
 
   public constructor(
     @inject(delay(() => MCLogger))
@@ -27,6 +29,7 @@ export class GMController {
     this.rasterCatalogManagerConfig = config.get<IRasterCatalogManager>(
       'rasterCatalogManager'
     );
+    this.tilesMountPath = config.get<string>('tilesMountPath');
   }
 
   public async start(
@@ -36,19 +39,31 @@ export class GMController {
   ): Promise<Response | void> {
     try {
       const input: IUserInput = req.body;
-      const layer = ((await axios.post(
-        `${this.rasterCatalogManagerConfig.url}/records/find`,
-        { id: req.body.layerId }
-      )).data as Record<string, unknown>[])[0];
+      const layer = (
+        (
+          await axios.post(
+            `${this.rasterCatalogManagerConfig.url}/records/find`,
+            { id: req.body.layerId }
+          )
+        ).data as Record<string, unknown>[]
+      )[0];
+
+      const layerMetadata = layer.metadata as LayerMetadata;
 
       const workerInput: IWorkerInput = {
         footprint: layer.footprint as Polygon | MultiPolygon,
         bbox: input.bbox,
-        version: (layer.metadata as LayerMetadata).productVersion as string,
-        cswLayerId: (layer.metadata as LayerMetadata).productId as string,
+        version: layerMetadata.productVersion as string,
+        cswLayerId: layerMetadata.productId as string,
         maxZoomLevel: input.maxZoomLevel,
         layerId: input.layerId,
         url: input.url,
+        tilesPath:
+          this.tilesMountPath +
+          sep +
+          layerMetadata.producerName +
+          sep +
+          layerMetadata.productVersion,
       };
 
       const jobCreated = await this.jobManager.createJobGM(workerInput);
