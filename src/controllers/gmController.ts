@@ -1,3 +1,4 @@
+import { sep } from 'path';
 import { MCLogger } from '@map-colonies/mc-logger';
 import { MultiPolygon, Polygon } from '@turf/helpers/dist/js/lib/geojson';
 import { NextFunction, Request, Response } from 'express';
@@ -12,7 +13,6 @@ import {
   IRasterCatalogManager,
   IWorkerInput,
 } from '../util/interfaces';
-import { sep } from 'path';
 
 export type RequestBody = Request<undefined, undefined, IUserInput>;
 
@@ -61,9 +61,9 @@ export class GMController {
         tilesPath:
           this.tilesMountPath +
           sep +
-          layerMetadata.producerName +
+          (layerMetadata.productId as string) +
           sep +
-          layerMetadata.productVersion,
+          (layerMetadata.productVersion as string),
       };
 
       const jobCreated = await this.jobManager.createJobGM(workerInput);
