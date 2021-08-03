@@ -106,7 +106,8 @@ export class JobManagerClient extends HttpClient {
             bbox: data.bbox,
             expirationTime: expirationTime,
             priority: data.priority,
-            tilesPath: data.tilesPath
+            tilesPath: data.tilesPath,
+            footprint: data.footprint
           },
         },
       ],

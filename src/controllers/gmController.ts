@@ -19,7 +19,6 @@ export type RequestBody = Request<undefined, undefined, IUserInput>;
 @injectable()
 export class GMController {
   private readonly rasterCatalogManagerConfig: IRasterCatalogManager;
-  private readonly tilesMountPath: string;
 
   public constructor(
     @inject(delay(() => MCLogger))
@@ -29,7 +28,6 @@ export class GMController {
     this.rasterCatalogManagerConfig = config.get<IRasterCatalogManager>(
       'rasterCatalogManager'
     );
-    this.tilesMountPath = config.get<string>('tilesMountPath');
   }
 
   public async start(
@@ -59,8 +57,6 @@ export class GMController {
         layerId: input.layerId,
         url: input.url,
         tilesPath:
-          this.tilesMountPath +
-          sep +
           (layerMetadata.productId as string) +
           sep +
           (layerMetadata.productVersion as string),
