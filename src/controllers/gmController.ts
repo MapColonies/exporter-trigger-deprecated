@@ -13,6 +13,7 @@ import {
   IRasterCatalogManager,
   IWorkerInput,
 } from '../util/interfaces';
+import { DEFAULT_CRS, DEFAULT_PRIORITY } from '../util/utils';
 
 export type RequestBody = Request<undefined, undefined, IUserInput>;
 
@@ -57,11 +58,13 @@ export class GMController {
         targetResolution: input.targetResolution,
         dbId: input.dbId,
         packageName: input.packageName,
-        url: input.url,
+        callbackURL: input.callbackURL,
         tilesPath:
           (layerMetadata.productId as string) +
           sep +
           (layerMetadata.productVersion as string),
+        priority: input.priority ?? DEFAULT_PRIORITY,
+        crs: input.crs ?? DEFAULT_CRS
       };
 
       const jobCreated = await this.jobManager.createJobGM(workerInput);

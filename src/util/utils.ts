@@ -10,3 +10,6 @@ export const zoomLevelFromRes = (resolution: number): number => {
     );
   return zoomLevel;
 };
+
+export const DEFAULT_PRIORITY = 1000;
+export const DEFAULT_CRS = 'EPSG:4326';

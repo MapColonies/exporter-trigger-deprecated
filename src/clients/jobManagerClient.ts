@@ -113,7 +113,7 @@ export class JobManagerClient extends HttpClient {
             dbId: data.dbId,
             crs: data.crs,
             zoomLevel,
-            url: data.url,
+            callbackURL: data.callbackURL,
             bbox: data.bbox,
             expirationTime: expirationTime,
             priority: data.priority,

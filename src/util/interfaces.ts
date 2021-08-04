@@ -83,6 +83,8 @@ export interface IWorkerInput extends IUserInput {
   version: string;
   cswProductId: string;
   tilesPath: string;
+  priority: number;
+  crs: string;
 }
 
 export interface SwaggerServer {
@@ -94,7 +96,7 @@ export interface SwaggerServer {
     dbId: string;
     targetResolution: number;
     crs?: string;
-    url: string;
+    callbackURL: string;
     bbox: BBox2d;
     priority?: number;
     packageName: string;
