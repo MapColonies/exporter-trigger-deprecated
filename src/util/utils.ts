@@ -1,5 +1,12 @@
 // TODO: Will be replaced by MC-UTILS
 export const zoomLevelFromRes = (resolution: number): number => {
-    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-    return Math.ceil(Math.log2(180 / (resolution * 256)));
-}
+  const MIN_ZOOM_LEVEL = 0;
+  const MAX_ZOOM_LEVEL = 22;
+  // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+  const zoomLevel = Math.ceil(Math.log2(180 / (resolution * 256)));
+  if (zoomLevel < MIN_ZOOM_LEVEL || zoomLevel > MAX_ZOOM_LEVEL)
+    throw new Error(
+      `Invalid zoom level ${zoomLevel} for resolution ${resolution}`
+    );
+  return zoomLevel;
+};

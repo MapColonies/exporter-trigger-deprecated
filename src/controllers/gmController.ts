@@ -56,6 +56,7 @@ export class GMController {
         cswProductId: layerMetadata.productId as string,
         targetResolution: input.targetResolution,
         dbId: input.dbId,
+        packageName: input.packageName,
         url: input.url,
         tilesPath:
           (layerMetadata.productId as string) +

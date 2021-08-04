@@ -97,6 +97,7 @@ export interface SwaggerServer {
     url: string;
     bbox: BBox2d;
     priority?: number;
+    packageName: string;
   }
   
   export interface IRasterCatalogManager {

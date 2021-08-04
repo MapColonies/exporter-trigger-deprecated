@@ -167,17 +167,15 @@ components:
         sourceLayer: satellite_5m_layer
 
     exportGetMap:
-      requried:
-        - dbId
-        - bbox
-        - targetResolution
-        - url
       type: object
       properties:
         dbId:
             type: string
             format: uuid
             description: ID as the primary key from the Raster Catalog
+        packageName:
+            type: string
+            description: The name of the desired GPKG. NO need to add extension (.gpkg) to this name
         bbox:
           type: array
           items:
@@ -200,6 +198,27 @@ components:
           description: The priority of the record. Maximum priority = most urgent.
           minimum: 0
           maximum: 1000
+      required:
+        - dbId
+        - bbox
+        - targetResolution
+        - url
+        - packageName          
+
+      example:
+        dbId: ef03ca54-c68e-4ca8-8432-50ae5ad7a7f8
+        packageName: myPackage
+        bbox:
+          [
+            34.811938017107494,
+            31.95475033759175,
+            34.82237261707599,
+            31.96426962177354,
+          ]
+        targetResolution: 4.29153442382812e-05
+        url: 'http://example.getmap.com/callback'
+        CRS: 'EPSG:4326'
+        priority: 0        
     
     exportProcess:
       required:
