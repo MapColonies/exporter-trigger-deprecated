@@ -54,6 +54,41 @@ paths:
           description: Server Error
           content: {}
       x-codegen-request-body-name: body
+  /getmap:
+    post:
+      tags:
+        - Export tiles to GPKG 
+      summary: Trigger export geopackage process
+      operationId: exportTilesToGpkg
+      requestBody:
+        $ref: '#/components/requestBodies/ExportGetmapBody'
+      responses:
+        200:
+          description: OK
+          content: {}
+        400:
+          description: BAD REQUEST - failed in export validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/exportGeopackageErrorBody' 
+              examples:
+                err_bbox:
+                  value:
+                    name: 'Error'
+                    message: 'OpenAPI parameters validation failed'
+        500:
+          description: Internal Server Error due to unavailable services
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/exportGeopackageErrorBody' 
+              examples:
+                err_bbox:
+                  value:
+                    name: 'Error'
+                    message: 'Other service - could not process the request'
+
   /exportStatus:
     get:
       tags:
@@ -86,6 +121,15 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/exportProcess'
+    
+    ExportGetmapBody:
+      description: Export to gpkg via GetMap
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/exportGetMap'      
+
   schemas:
     exportGeopackageErrorBody:
       type: object
@@ -122,6 +166,60 @@ components:
         exportType: raster
         sourceLayer: satellite_5m_layer
 
+    exportGetMap:
+      type: object
+      properties:
+        dbId:
+            type: string
+            format: uuid
+            description: ID as the primary key from the Raster Catalog
+        packageName:
+            type: string
+            description: The name of the desired GPKG. NO need to add extension (.gpkg) to this name
+        bbox:
+          type: array
+          items:
+            type: number
+          minItems: 4
+          maxItems: 4
+          description: Bounding box corners (lower left, upper right)=[minx,miny,maxx,maxy] in crs units as array
+        targetResolution:
+          type: number
+          description: The target resolution in which the tiles will be created - DEGREE to PIXEL
+        callbackURL:
+          type: string
+          description: The callback URL to notify the process if finished
+        CRS:
+          type: string
+          description: The CRS to be used, defaults to EPSG:4326
+          enum: ['EPSG:4326']
+        priority:
+          type: number
+          description: The priority of the record. Maximum priority = most urgent.
+          minimum: 0
+          maximum: 999999999
+      required:
+        - dbId
+        - bbox
+        - targetResolution
+        - callbackURL
+        - packageName          
+
+      example:
+        dbId: ef03ca54-c68e-4ca8-8432-50ae5ad7a7f8
+        packageName: myPackage
+        bbox:
+          [
+            34.811938017107494,
+            31.95475033759175,
+            34.82237261707599,
+            31.96426962177354,
+          ]
+        targetResolution: 4.29153442382812e-05
+        callbackURL: 'http://example.getmap.com/callback'
+        CRS: 'EPSG:4326'
+        priority: 0        
+    
     exportProcess:
       required:
         - bbox

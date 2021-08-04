@@ -8,13 +8,16 @@ keys = [
     "/configuration/swagger/port",
     "/configuration/storage/service/url",
     "/configuration/storage/export/expiration/days",
-    "/configuration/storage/job/type",
-    "/configuration/storage/task/type",
     "/configuration/bbox/area/square/km/limit",
     "/configuration/export/default/url",
     "/configuration/export/default/layer",
     "/configuration/default/type",
     "/configuration/http/retry/attempts",
     "/configuration/http/retry/delay",
-    "/configuration/http/retry/should/reset/timeout"
+    "/configuration/http/retry/should/reset/timeout",
+    "/configuration/raster/catalog/manager/url",
+    "/configuration/worker/gdal/job/type",
+    "/configuration/worker/gdal/task/type",
+    "/configuration/worker/tiles/job/type",
+    "/configuration/worker/tiles/task/type"
 ]
