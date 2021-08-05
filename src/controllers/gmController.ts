@@ -45,8 +45,16 @@ export class GMController {
             `${this.rasterCatalogManagerConfig.url}/records/find`,
             { id: req.body.dbId }
           )
-        ).data as Record<string, unknown>[]
+        ).data as (Record<string, unknown> | undefined)[]
       )[0];
+
+      if (layer === undefined) {
+        return res
+          .status(httpStatus.NOT_FOUND)
+          .json({
+            message: `Could not find layer with dbID: ${req.body.dbId}`,
+          });
+      }
 
       const layerMetadata = layer.metadata as LayerMetadata;
 
@@ -64,7 +72,7 @@ export class GMController {
           sep +
           (layerMetadata.productVersion as string),
         priority: input.priority ?? DEFAULT_PRIORITY,
-        crs: input.crs ?? DEFAULT_CRS
+        crs: input.crs ?? DEFAULT_CRS,
       };
 
       const jobCreated = await this.jobManager.createJobGM(workerInput);
