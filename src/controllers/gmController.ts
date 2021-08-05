@@ -45,7 +45,7 @@ export class GMController {
             `${this.rasterCatalogManagerConfig.url}/records/find`,
             { id: req.body.dbId }
           )
-        ).data as Record<string, unknown>[]
+        ).data as (Record<string, unknown> | undefined)[]
       )[0];
 
       if (layer === undefined) {
