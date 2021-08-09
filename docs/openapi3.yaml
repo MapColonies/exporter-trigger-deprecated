@@ -23,7 +23,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/exportGeopackageErrorBody' 
+                $ref: '#/components/schemas/exportGeopackageErrorBody'
               examples:
                 err_bbox:
                   value:
@@ -46,7 +46,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/exportGeopackageErrorBody' 
+                $ref: '#/components/schemas/exportGeopackageErrorBody'
               example:
                 name: 'ERR_EXPORT_DATA_DUPLICATION'
                 message: 'Failed saving export data because of duplication of unique fields, data=DATA, error=ERROR'
@@ -57,7 +57,7 @@ paths:
   /getmap:
     post:
       tags:
-        - Export tiles to GPKG 
+        - Export tiles to GPKG
       summary: Trigger export geopackage process
       operationId: exportTilesToGpkg
       requestBody:
@@ -71,7 +71,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/exportGeopackageErrorBody' 
+                $ref: '#/components/schemas/exportGeopackageErrorBody'
               examples:
                 err_bbox:
                   value:
@@ -82,7 +82,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/exportGeopackageErrorBody' 
+                $ref: '#/components/schemas/exportGeopackageErrorBody'
               examples:
                 err_bbox:
                   value:
@@ -121,14 +121,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/exportProcess'
-    
+
     ExportGetmapBody:
       description: Export to gpkg via GetMap
       required: true
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/exportGetMap'      
+            $ref: '#/components/schemas/exportGetMap'
 
   schemas:
     exportGeopackageErrorBody:
@@ -160,7 +160,7 @@ components:
         sourceLayer:
           type: string
           description: Source layer name from which the exported file
-          
+
       example:
         url: http://test/geoserver/ows?service=wms
         exportType: raster
@@ -170,12 +170,13 @@ components:
       type: object
       properties:
         dbId:
-            type: string
-            format: uuid
-            description: ID as the primary key from the Raster Catalog
+          type: string
+          format: uuid
+          description: ID as the primary key from the Raster Catalog
         packageName:
-            type: string
-            description: The name of the desired GPKG. NO need to add extension (.gpkg) to this name
+          type: string
+          description: The name of the desired GPKG. NO need to add extension (.gpkg) to this name
+          pattern: '^[a-zA-Z0-9_-]+$'
         bbox:
           type: array
           items:
@@ -203,7 +204,7 @@ components:
         - bbox
         - targetResolution
         - callbackURL
-        - packageName          
+        - packageName
 
       example:
         dbId: ef03ca54-c68e-4ca8-8432-50ae5ad7a7f8
@@ -218,8 +219,8 @@ components:
         targetResolution: 4.29153442382812e-05
         callbackURL: 'http://example.getmap.com/callback'
         CRS: 'EPSG:4326'
-        priority: 0        
-    
+        priority: 0
+
     exportProcess:
       required:
         - bbox
